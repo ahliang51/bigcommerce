@@ -20,7 +20,7 @@ export class LoginProvider {
   signIn(credentials) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/signin', credentials, { headers: headers })
+    return this.http.post(vars.apiUrl + '/login', credentials, { headers: headers })
       .map(res => res.json());
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { LoginProvider } from '../../providers/login/login';
 
 /**
  * Generated class for the LoginPage page.
@@ -15,7 +16,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public loginService: LoginProvider) {
   }
 
   ionViewDidLoad() {
@@ -24,5 +27,11 @@ export class LoginPage {
 
   onSignIn(email, password) {
     console.log(email, password)
+    this.loginService.signIn({
+      email: email,
+      password: password
+    }).subscribe(data => {
+      console.log(data);
+    })
   }
 }

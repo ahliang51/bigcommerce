@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import { HttpModule } from '@angular/http';
+
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
@@ -12,6 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { LoginProvider } from '../providers/login/login';
+import { ProductProvider } from '../providers/product/product';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,7 @@ import { LoginProvider } from '../providers/login/login';
     TabsPage
   ],
   imports: [
+    HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp)
   ],
@@ -39,7 +43,8 @@ import { LoginProvider } from '../providers/login/login';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    LoginProvider
+    LoginProvider,
+    ProductProvider
   ]
 })
 export class AppModule { }
