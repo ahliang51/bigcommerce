@@ -16,21 +16,19 @@ import { LoginProvider } from '../../providers/login/login';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController,
-    public navParams: NavParams,
-    public loginService: LoginProvider) {
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams,
+    private loginService: LoginProvider,
+  ) {
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     console.log('ionViewDidLoad LoginPage');
+    // console.log(this.storage.get('phoneNumber'))
   }
 
-  onSignIn(email, password) {
-    console.log(email, password)
-    this.loginService.signIn({
-      email: email,
-      password: password
-    }).subscribe(data => {
+  onSignIn(phoneNumber) {
+    this.loginService.signIn(phoneNumber).subscribe(data => {
       console.log(data);
     })
   }

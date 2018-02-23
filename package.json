@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^2.6.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "mongodb": "^3.0.2",
     "node-bigcommerce": "^3.0.0",
     "request": "^2.81.0"
   }

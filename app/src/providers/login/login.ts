@@ -17,10 +17,10 @@ export class LoginProvider {
     console.log('Hello LoginProvider Provider');
   }
 
-  signIn(credentials) {
+  signIn(phoneNumber) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/login', credentials, { headers: headers })
+    return this.http.post(vars.apiUrl + '/login', { phoneNumber: phoneNumber }, { headers: headers })
       .map(res => res.json());
   }
 }

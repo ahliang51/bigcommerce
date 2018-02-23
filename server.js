@@ -4,7 +4,9 @@ let express = require('express'),
   bodyParser = require('body-parser'),
   async = require('async'),
   http = require('http'),
-  BigCommerce = require('node-bigcommerce');
+  BigCommerce = require('node-bigcommerce'),
+  MongoClient = require('mongodb').MongoClient,
+  db;
 
 // Initialisation
 let app = express(),
@@ -15,6 +17,12 @@ let app = express(),
     responseType: 'json',
     storeHash: 'rf1n0ws0yc',
   });
+
+MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
+  if (err) return console.log(err)
+  db = database.db('big-commerce');
+});
+
 
 let storeImagePath = 'https://store-rf1n0ws0yc.mybigcommerce.com/product_images/';
 
@@ -41,12 +49,49 @@ app.use(function (req, res, next) {
   3) Use https://api.bigcommerce.com/stores/rf1n0ws0yc/v2/customers/1/validate to validate password
 */
 
-// app.post('/login', (req, res, next) => {
-//   bigCommerce.get('/customers?email=' + escape('83827925'))
-//     .then(data => res.json(console.log(data))
-//     );
-//   // console.log(req.body);
-// });
+//Writing for sign up 
+app.post('/sign-up', (req, res, next) => {
+
+  async.waterfall([
+    createUserEcommerce,
+    createUserMongo
+  ], function (err, result) {
+    if (err) {
+      res.json({
+        success: false
+      })
+    } else {
+      res.json({
+        success: true,
+      })
+    }
+  });
+
+  function createUserEcommerce(callback) {
+    bigCommerce.post('/customers', {
+      first_name: "asd",
+      last_name: "asd",
+      email: "asd@asasdd.com",
+      phone: req.body.phoneNumber
+    }).then(data => {
+      console.log(data)
+      callback(null, data)
+    })
+      .catch(err => {
+        callback(true)
+      })
+  }
+
+  function createUserMongo(result, callback) {
+    db.collection('users').insert({
+      customerEcommerceId: result.id,
+      phoneNumber: req.body.phoneNumber,
+    }).then(result => {
+      callback(null, result)
+    })
+  }
+
+});
 
 app.get('/categories', (req, res, next) => {
   bigCommerce.get('/categories')
@@ -73,7 +118,9 @@ app.get('/auth', (req, res, next) => {
 });
 
 
-//Start the server
+
+
+//Start the server only the connection to database is successful
 app.listen(port, () => {
   console.log('Server started on port' + port);
 });

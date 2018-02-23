@@ -15,12 +15,9 @@
 
 <ion-content padding>
   <ion-item>
-    <ion-label>Email</ion-label>
-    <ion-input #email></ion-input>
+    <ion-label>Phone Number</ion-label>
+    <ion-input #phoneNumber></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-label>Password</ion-label>
-    <ion-input #password></ion-input>
-  </ion-item>
-  <button ion-button (click)="onSignIn(email.value,password.value)">Sign In</button>
+
+  <button ion-button (click)="onSignIn(phoneNumber.value)">Sign In</button>
 </ion-content>

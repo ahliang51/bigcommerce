@@ -4,6 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HttpModule } from '@angular/http';
+import { Sim } from '@ionic-native/sim';
+
 
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -44,7 +46,8 @@ import { ProductProvider } from '../providers/product/product';
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
-    ProductProvider
+    ProductProvider,
+    Sim,
   ]
 })
 export class AppModule { }
