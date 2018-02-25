@@ -16,6 +16,15 @@ let app = express(),
     accessToken: 'hgqw8707d38ewj8y8ubu23dfuswmsbs',
     responseType: 'json',
     storeHash: 'rf1n0ws0yc',
+  }),
+
+  bigCommerceV3 = new BigCommerce({
+    logLevel: 'info',
+    clientId: '6ghpql63fa6rta160z7ur96gwgn280q',
+    accessToken: 'hgqw8707d38ewj8y8ubu23dfuswmsbs',
+    responseType: 'json',
+    storeHash: 'rf1n0ws0yc',
+    apiVersion: 'v3'
   });
 
 MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
@@ -110,6 +119,58 @@ app.post('/product-categories', (req, res, next) => {
     })
 });
 
+// app.post('/product-detail', (req, res, next) => {
+
+//   async.waterfall([
+//     getProductDetails,
+//     getProductImages
+//   ], function (err, result) {
+//     if (err) {
+//       res.json({
+//         success: false
+//       })
+//     } else {
+//       res.json({
+//         success: true,
+//         result: result
+//       })
+//     }
+//   });
+
+//   function getProductDetails(callback) {
+//     bigCommerce.get('/products/' + req.body.productId)
+//       .then(data => {
+//         callback(null, data)
+//       })
+//   }
+
+//   function getProductImages(result, callback) {
+//     bigCommerce.get('/products/' + req.body.productId + '/images')
+//       .then(data => {
+//         result.images = data
+//         callback(null, result)
+//       })
+//   }
+// });
+
+app.post('/product-detail', (req, res, next) => {
+  bigCommerceV3.get('/catalog/products/' + req.body.productId + '?include=images,variants')
+    .then(data => res.json(data)
+    );
+});
+
+app.get('/test', (req, res, next) => {
+  bigCommerceV3.get('/catalog/products/113/variants/78')
+    .then(data => res.json(data)
+    );
+});
+
+app.post('/test1', (req, res, next) => {
+  bigCommerceV3.post('/carts',
+    { line_items: req.body.line_items })
+    .then(data => res.json(data)
+    );
+});
 
 app.get('/auth', (req, res, next) => {
   bigCommerce.get('/customers')

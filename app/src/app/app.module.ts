@@ -4,7 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HttpModule } from '@angular/http';
-import { Sim } from '@ionic-native/sim';
 
 
 import { AboutPage } from '../pages/about/about';
@@ -17,6 +16,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { LoginProvider } from '../providers/login/login';
 import { ProductProvider } from '../providers/product/product';
+import { ProductCategoriesPage } from '../pages/product-categories/product-categories';
+import { ProductDetailPage } from '../pages/product-detail/product-detail';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { ProductProvider } from '../providers/product/product';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ProductCategoriesPage,
+    ProductDetailPage
   ],
   imports: [
     HttpModule,
@@ -39,7 +42,9 @@ import { ProductProvider } from '../providers/product/product';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    ProductCategoriesPage,
+    ProductDetailPage
   ],
   providers: [
     StatusBar,
@@ -47,7 +52,6 @@ import { ProductProvider } from '../providers/product/product';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     ProductProvider,
-    Sim,
   ]
 })
 export class AppModule { }

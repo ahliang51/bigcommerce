@@ -15,4 +15,15 @@
 
 <ion-content padding>
 
+  <ion-list>
+    <ion-item *ngFor="let productCategory of productCategories" padding>
+      <ion-thumbnail item-start>
+        <!-- Always display the first image of the image variants -->
+        <img src={{productCategory.primary_image.thumbnail_url}}>
+      </ion-thumbnail>
+      <h2>{{productCategory.name}}</h2>
+      <p>${{productCategory.price}}</p>
+      <button ion-button clear item-end (click)="viewDetails(productCategory);">View</button>
+    </ion-item>
+  </ion-list>
 </ion-content>

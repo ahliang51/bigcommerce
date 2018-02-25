@@ -17,7 +17,7 @@ export class HomePage {
   }
   ionViewWillEnter() {
     this.productService.retrieveCategories().subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.categories = data;
     })
   }
@@ -26,8 +26,6 @@ export class HomePage {
     this.navCtrl.push(ProductCategoriesPage, {
       categoryId: categoryId
     })
-    this.productService.retrieveProductCategories(categoryId).subscribe(data => {
-      console.log(data)
-    })
+
   }
 }

@@ -29,4 +29,11 @@ export class ProductProvider {
     return this.http.post(vars.apiUrl + '/product-categories', { categoryId: categoryId }, { headers: headers })
       .map(res => res.json());
   }
+
+  retrieveProductDetails(productId) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(vars.apiUrl + '/product-detail', { productId: productId }, { headers: headers })
+      .map(res => res.json());
+  }
 }
