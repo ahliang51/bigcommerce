@@ -1,5 +1,19 @@
-<ion-tabs>
+<!-- <ion-tabs>
   <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
   <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-</ion-tabs>
+</ion-tabs> -->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{pageTitle}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-bounce>
+
+  <super-tabs id="mainTabs" selectedTabIndex="0" toolbarColor="dark" toolbarBackground="light" [config]="{ sideMenu: 'left' }"
+    (tabSelect)="onTabSelect($event)">
+    <super-tab [root]="tab1Root" icon="home"></super-tab>
+    <super-tab [root]="tab2Root" icon="cart"></super-tab>
+    <super-tab [root]="tab3Root" icon="contacts"></super-tab>
+  </super-tabs>
+</ion-content>

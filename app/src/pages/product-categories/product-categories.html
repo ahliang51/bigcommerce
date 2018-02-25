@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>product-categories</ion-title>
+    <ion-title>{{categoryName}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +15,7 @@
 
 <ion-content padding>
 
-  <ion-list>
+  <ion-list *ngIf="productCategories">
     <ion-item *ngFor="let productCategory of productCategories" padding>
       <ion-thumbnail item-start>
         <!-- Always display the first image of the image variants -->

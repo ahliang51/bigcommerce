@@ -4,10 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { HttpModule } from '@angular/http';
+import { SuperTabsModule } from 'ionic2-super-tabs';
 
-
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -18,13 +16,15 @@ import { LoginProvider } from '../providers/login/login';
 import { ProductProvider } from '../providers/product/product';
 import { ProductCategoriesPage } from '../pages/product-categories/product-categories';
 import { ProductDetailPage } from '../pages/product-detail/product-detail';
+import { CartPage } from '../pages/cart/cart';
+import { ProfilePage } from '../pages/profile/profile';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
-    AboutPage,
-    ContactPage,
+    CartPage,
+    ProfilePage,
     HomePage,
     TabsPage,
     ProductCategoriesPage,
@@ -33,14 +33,15 @@ import { ProductDetailPage } from '../pages/product-detail/product-detail';
   imports: [
     HttpModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    SuperTabsModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
-    AboutPage,
-    ContactPage,
+    CartPage,
+    ProfilePage,
     HomePage,
     TabsPage,
     ProductCategoriesPage,

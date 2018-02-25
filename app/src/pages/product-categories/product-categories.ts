@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
 import { ProductDetailPage } from '../product-detail/product-detail';
 
@@ -18,19 +18,28 @@ import { ProductDetailPage } from '../product-detail/product-detail';
 export class ProductCategoriesPage {
 
   categoryId;
+  categoryName;
   productCategories = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private productService: ProductProvider) {
+    private productService: ProductProvider,
+    public loadingCtrl: LoadingController) {
     this.categoryId = navParams.get("categoryId")
+    this.categoryName = navParams.get("categoryName")
 
   }
 
   ionViewDidLoad() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    loading.present();
     this.productService.retrieveProductCategories(this.categoryId).subscribe(data => {
       // console.log(data)
       this.productCategories = data;
+      loading.dismiss();
       console.log(this.productCategories)
     })
   }

@@ -14,7 +14,7 @@
 
 
 <ion-content>
-  <div *ngIf="productDetails">
+  <div *ngIf="containResult">
     <ion-slides pager="true">
       <ion-slide *ngFor="let picture of productDetails.images">
         <img src={{picture.url_zoom}} alt="">
