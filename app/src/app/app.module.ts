@@ -18,6 +18,7 @@ import { ProductCategoriesPage } from '../pages/product-categories/product-categ
 import { ProductDetailPage } from '../pages/product-detail/product-detail';
 import { CartPage } from '../pages/cart/cart';
 import { ProfilePage } from '../pages/profile/profile';
+import { Facebook } from '@ionic-native/facebook';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { ProfilePage } from '../pages/profile/profile';
     HttpModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    SuperTabsModule.forRoot()
+    SuperTabsModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -53,6 +54,7 @@ import { ProfilePage } from '../pages/profile/profile';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     ProductProvider,
+    Facebook
   ]
 })
 export class AppModule { }

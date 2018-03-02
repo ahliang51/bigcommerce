@@ -12,18 +12,18 @@ let express = require('express'),
 let app = express(),
   bigCommerce = new BigCommerce({
     logLevel: 'info',
-    clientId: '6ghpql63fa6rta160z7ur96gwgn280q',
-    accessToken: 'hgqw8707d38ewj8y8ubu23dfuswmsbs',
+    clientId: 'fyw4wc39x8yk059j65n9iuxu7etfo61',
+    accessToken: '1b0o84pk14sa1ner74ygmvqhje4hdml',
     responseType: 'json',
-    storeHash: 'rf1n0ws0yc',
+    storeHash: '5q1eg0d0bi',
   }),
 
   bigCommerceV3 = new BigCommerce({
     logLevel: 'info',
-    clientId: '6ghpql63fa6rta160z7ur96gwgn280q',
-    accessToken: 'hgqw8707d38ewj8y8ubu23dfuswmsbs',
+    clientId: 'fyw4wc39x8yk059j65n9iuxu7etfo61',
+    accessToken: '1b0o84pk14sa1ner74ygmvqhje4hdml',
     responseType: 'json',
-    storeHash: 'rf1n0ws0yc',
+    storeHash: '5q1eg0d0bi',
     apiVersion: 'v3'
   });
 
@@ -33,7 +33,7 @@ MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/bi
 });
 
 
-let storeImagePath = 'https://store-rf1n0ws0yc.mybigcommerce.com/product_images/';
+let storeImagePath = 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/';
 
 
 
@@ -119,39 +119,6 @@ app.post('/product-categories', (req, res, next) => {
     })
 });
 
-// app.post('/product-detail', (req, res, next) => {
-
-//   async.waterfall([
-//     getProductDetails,
-//     getProductImages
-//   ], function (err, result) {
-//     if (err) {
-//       res.json({
-//         success: false
-//       })
-//     } else {
-//       res.json({
-//         success: true,
-//         result: result
-//       })
-//     }
-//   });
-
-//   function getProductDetails(callback) {
-//     bigCommerce.get('/products/' + req.body.productId)
-//       .then(data => {
-//         callback(null, data)
-//       })
-//   }
-
-//   function getProductImages(result, callback) {
-//     bigCommerce.get('/products/' + req.body.productId + '/images')
-//       .then(data => {
-//         result.images = data
-//         callback(null, result)
-//       })
-//   }
-// });
 
 app.post('/product-detail', (req, res, next) => {
   bigCommerceV3.get('/catalog/products/' + req.body.productId + '?include=images,variants')

@@ -26,7 +26,7 @@ export class HomePage {
 
     loading.present();
     this.productService.retrieveCategories().subscribe(data => {
-      // console.log(data);
+      console.log(data);
       this.categories = data;
       loading.dismiss();
     })

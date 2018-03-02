@@ -81,6 +81,11 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <engine name="android" spec="~6.2.3" />
     <allow-navigation href="http://192.168.1.1:8100" />
+    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
+        <variable name="APP_ID" value="285658675299786" />
+        <variable name="APP_NAME" value="2d8ba6354c7906da9679447b4d66ea0b" />
+    </plugin>
+    <allow-navigation href="http://192.168.1.4:8100" />
+    <engine name="android" spec="6.2.3" />
 </widget>
