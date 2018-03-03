@@ -36,6 +36,7 @@
         "cordova-plugin-splashscreen": "^5.0.2",
         "cordova-plugin-statusbar": "^2.4.1",
         "cordova-plugin-whitelist": "^1.3.3",
+        "cordova-sqlite-storage": "^2.2.1",
         "font-awesome": "^4.7.0",
         "ionic-angular": "3.9.2",
         "ionic2-super-tabs": "^4.2.2",
@@ -61,7 +62,8 @@
             "cordova-plugin-facebook4": {
                 "APP_ID": "285658675299786",
                 "APP_NAME": "2d8ba6354c7906da9679447b4d66ea0b"
-            }
+            },
+            "cordova-sqlite-storage": {}
         },
         "platforms": [
             "android"

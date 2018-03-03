@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
 import { CurrencyPipe } from '@angular/common';
+import { Storage } from '@ionic/storage';
+
 
 
 /**
@@ -25,7 +27,9 @@ export class ProductDetailPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private productService: ProductProvider,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    private storage: Storage,
+    private toastCtrl: ToastController) {
     this.productId = navParams.get("productId")
   }
 
@@ -45,6 +49,24 @@ export class ProductDetailPage {
       this.containResult = true;
       console.log(this.productDetails)
     })
+  }
+
+  onAddToCart() {
+    this.storage.set('cart', {
+      line_item: [{
+        "product_id": this.productId,
+        "quantity": 1
+      }]
+    });
+
+    let toast = this.toastCtrl.create({
+      message: 'Added To Cart',
+      duration: 2000,
+      position: 'bottom'
+    });
+
+    toast.present();
+    this.navCtrl.pop();
   }
 
 }

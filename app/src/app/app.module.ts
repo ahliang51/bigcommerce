@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 
 import { HttpModule } from '@angular/http';
 import { SuperTabsModule } from 'ionic2-super-tabs';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -36,6 +37,7 @@ import { Facebook } from '@ionic-native/facebook';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
