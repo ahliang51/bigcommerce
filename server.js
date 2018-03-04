@@ -127,7 +127,7 @@ app.post('/product-detail', (req, res, next) => {
 });
 
 app.get('/test', (req, res, next) => {
-  bigCommerceV3.get('/catalog/products/113/variants/78')
+  bigCommerce.get('/payments/methods')
     .then(data => res.json(data)
     );
 });
@@ -137,6 +137,49 @@ app.post('/test1', (req, res, next) => {
     { line_items: req.body.line_items })
     .then(data => res.json(data)
     );
+});
+
+//Creating Order
+app.post('/test2', (req, res, next) => {
+  let storeCredit = 0;
+  bigCommerce.get('/customers/1')
+    .then(result => {
+      storeCredit = result.store_credit - 21;
+      bigCommerce.put('/customers/1', {
+        store_credit: storeCredit
+      }).then(result => {
+        res.json(result)
+      })
+    })
+  // bigCommerce.post('/orders',
+  //   {
+  //     discount_amount: 24.00,
+  //     status_id: 11,
+  //     payment_method: "Store Credit By Mobile App",
+  //     customer_id: 1,
+  //     billing_address: {
+  //       "first_name": "Trisha",
+  //       "last_name": "McLaughlin",
+  //       "company": "",
+  //       "street_1": "12345 W Anderson Ln",
+  //       "street_2": "",
+  //       "city": "Austin",
+  //       "state": "Texas",
+  //       "zip": "78757",
+  //       "country": "United States",
+  //       "country_iso2": "US",
+  //       "phone": "",
+  //       "email": "elsie@example.com"
+  //     },
+  //     products: [
+  //       {
+  //         "product_id": 112,
+  //         "quantity": 2
+  //       }]
+  //   })
+  //   .then(data => res.json(data)
+  //   )
+  //   .catch(err => { res.json(err) })
 });
 
 app.get('/auth', (req, res, next) => {

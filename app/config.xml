@@ -3,7 +3,7 @@
     <name>bigcommerce</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.4:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -21,6 +21,10 @@
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <config-file parent="/resources" target="./res/values/strings.xml">
+            <string name="fb_app_id">1234</string>
+            <string name="fb_app_name">foobar</string>
+        </config-file>
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
@@ -87,6 +91,6 @@
         <variable name="APP_NAME" value="2d8ba6354c7906da9679447b4d66ea0b" />
     </plugin>
     <allow-navigation href="http://192.168.1.4:8100" />
-    <engine name="android" spec="6.2.3" />
     <plugin name="cordova-sqlite-storage" spec="^2.2.1" />
+    <engine name="android" spec="7.0.0" />
 </widget>

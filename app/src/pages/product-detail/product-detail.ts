@@ -52,12 +52,44 @@ export class ProductDetailPage {
   }
 
   onAddToCart() {
-    this.storage.set('cart', {
-      line_item: [{
-        "product_id": this.productId,
-        "quantity": 1
-      }]
-    });
+
+    this.storage.get('cart').then(result => {
+
+
+      console.log(result)
+      //There is a cart already
+      if (result) {
+        let itemExist = false;
+        for (let item of result.line_item) {
+
+          // There is such item in the cart already
+          if (item.product_id == this.productId) {
+            console.log(item.quantity)
+            item.quantity = item.quantity + 1; // there is problem here, quantity is not updated
+            itemExist = true;
+          }
+        }
+        //No such item in the cart
+
+        if (!itemExist) {
+          result.line_item.push({
+            "product_id": this.productId,
+            "quantity": 1
+          })
+        }
+        this.storage.set('cart', result);
+
+      }
+      //There are no cart
+      else {
+        this.storage.set('cart', {
+          line_item: [{
+            "product_id": this.productId,
+            "quantity": 1
+          }]
+        });
+      }
+    })
 
     let toast = this.toastCtrl.create({
       message: 'Added To Cart',
