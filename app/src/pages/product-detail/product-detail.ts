@@ -21,13 +21,13 @@ import { Storage } from '@ionic/storage';
 export class ProductDetailPage {
 
   productId;
-  productDetails = [];
+  productDetails;
   containResult = false;
 
-  constructor(public navCtrl: NavController,
-    public navParams: NavParams,
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams,
     private productService: ProductProvider,
-    public loadingCtrl: LoadingController,
+    private loadingCtrl: LoadingController,
     private storage: Storage,
     private toastCtrl: ToastController) {
     this.productId = navParams.get("productId")
@@ -39,8 +39,7 @@ export class ProductDetailPage {
     });
 
     loading.present();
-    console.log('ionViewDidLoad ProductDetailPage');
-    console.log(this.productId)
+    // console.log(this.productId)
 
     this.productService.retrieveProductDetails(this.productId).subscribe(result => {
       // console.log(data)
@@ -60,10 +59,10 @@ export class ProductDetailPage {
       //There is a cart already
       if (result) {
         let itemExist = false;
-        for (let item of result.line_item) {
+        for (let item of result) {
 
           // There is such item in the cart already
-          if (item.product_id == this.productId) {
+          if (item.productId == this.productId) {
             console.log(item.quantity)
             item.quantity = item.quantity + 1; // there is problem here, quantity is not updated
             itemExist = true;
@@ -72,9 +71,12 @@ export class ProductDetailPage {
         //No such item in the cart
 
         if (!itemExist) {
-          result.line_item.push({
-            "product_id": this.productId,
-            "quantity": 1
+          result.push({
+            "productName": this.productDetails.name,
+            "productId": this.productId,
+            "quantity": 1,
+            "imagesUrl": this.productDetails.images[0].url_thumbnail,
+            "price": this.productDetails.price
           })
         }
         this.storage.set('cart', result);
@@ -82,12 +84,15 @@ export class ProductDetailPage {
       }
       //There are no cart
       else {
-        this.storage.set('cart', {
-          line_item: [{
+        this.storage.set('cart',
+          [{
+            "productName": this.productDetails.name,
             "product_id": this.productId,
-            "quantity": 1
+            "quantity": 1,
+            "imagesUrl": this.productDetails.images[0].url_thumbnail,
+            "price": this.productDetails.price
           }]
-        });
+        )
       }
     })
 

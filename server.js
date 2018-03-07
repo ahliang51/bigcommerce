@@ -110,6 +110,9 @@ app.get('/categories', (req, res, next) => {
       }
       res.json(data)
     })
+    .catch(err => {
+      res.json(err);
+    })
 });
 
 app.post('/product-categories', (req, res, next) => {

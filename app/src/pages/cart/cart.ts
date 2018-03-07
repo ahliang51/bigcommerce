@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the CartPage page.
@@ -15,11 +16,60 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CartPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  cartArray = [];
+  totalAmount = 0.00;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private storage: Storage,
+    private loadingCtrl: LoadingController) {
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
+
+    //Initialise back to 0
+    this.totalAmount = 0.00;
+
+    // Loading
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+
+    //Retrieve Data
     console.log('ionViewDidLoad CartPage');
+    this.storage.get('cart').then(result => {
+      this.cartArray = result;
+      console.log(this.cartArray)
+    }).then(() => {
+      //Calculate total amount
+      for (let amount of this.cartArray) {
+        this.totalAmount = this.totalAmount + (amount.price * amount.quantity);
+        console.log(this.totalAmount)
+      }
+
+      loading.dismiss();
+    })
+  }
+
+  onRemove(index) {
+    if (this.cartArray.length > 1) {
+      this.cartArray.splice(index, 1);
+      this.totalAmount = this.totalAmount - this.cartArray[index].price;
+      this.storage.set('cart', this.cartArray).then(() => {
+        this.ionViewWillEnter();
+      });
+    }
+    else {
+      // Loading
+      let loading = this.loadingCtrl.create({
+        content: 'Please wait...'
+      });
+      loading.present();
+      this.storage.remove('cart').then(() => {
+        loading.dismiss();
+      })
+    }
   }
 
 }
