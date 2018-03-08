@@ -7,11 +7,11 @@
 <ion-content padding>
 
   <!-- Show when there are no products in the cart  -->
-  <div *ngIf="!cartArray?.length > 0">
+  <div *ngIf="cartArray?.length < 1">
     There are no items in the cart
   </div>
 
-  <ion-list *ngIf="cartArray?.length > 0">
+  <ion-list>
     <ion-item *ngFor="let item of cartArray; let i = index" padding>
       <ion-thumbnail item-start>
         <!-- Display the first image of the product  -->
@@ -42,7 +42,7 @@
 
   <!-- Only show when there is product in the cart  -->
   <div text-center *ngIf="cartArray?.length > 0">
-    <button ion-button margin-top (click)="checkOut()">Check Out</button>
+    <button ion-button block margin-top (click)="checkOut()">PLACE ORDER</button>
   </div>
 
 </ion-content>

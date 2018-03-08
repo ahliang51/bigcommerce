@@ -87,7 +87,7 @@ export class ProductDetailPage {
         this.storage.set('cart',
           [{
             "productName": this.productDetails.name,
-            "product_id": this.productId,
+            "productId": this.productId,
             "quantity": 1,
             "imagesUrl": this.productDetails.images[0].url_thumbnail,
             "price": this.productDetails.price

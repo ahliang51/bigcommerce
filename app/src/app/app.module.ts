@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { HttpModule } from '@angular/http';
 import { SuperTabsModule } from 'ionic2-super-tabs';
 import { IonicStorageModule } from '@ionic/storage';
+import { Network } from '@ionic-native/network';
 
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -56,7 +57,8 @@ import { Facebook } from '@ionic-native/facebook';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     ProductProvider,
-    Facebook
+    Facebook,
+    Network
   ]
 })
 export class AppModule { }

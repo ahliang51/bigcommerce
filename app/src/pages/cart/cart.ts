@@ -26,6 +26,7 @@ export class CartPage {
   }
 
   ionViewWillEnter() {
+    console.log(this.cartArray)
 
     //Initialise back to 0
     this.totalAmount = 0.00;
@@ -37,9 +38,11 @@ export class CartPage {
     loading.present();
 
     //Retrieve Data
-    console.log('ionViewDidLoad CartPage');
     this.storage.get('cart').then(result => {
-      this.cartArray = result;
+      // If there is data then assign to cartArray, if not dont assign anything
+      if (result) {
+        this.cartArray = result;
+      }
       console.log(this.cartArray)
     }).then(() => {
       //Calculate total amount

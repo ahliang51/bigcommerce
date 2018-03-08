@@ -27,10 +27,10 @@ let app = express(),
     apiVersion: 'v3'
   });
 
-MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
-  if (err) return console.log(err)
-  db = database.db('big-commerce');
-});
+// MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
+//   if (err) return console.log(err)
+//   db = database.db('big-commerce');
+// });
 
 
 let storeImagePath = 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/';
@@ -78,14 +78,14 @@ app.post('/sign-up', (req, res, next) => {
 
   function createUserEcommerce(callback) {
     bigCommerce.post('/customers', {
-      first_name: "asd",
-      last_name: "asd",
-      email: "asd@asasdd.com",
-      phone: req.body.phoneNumber
-    }).then(data => {
-      console.log(data)
-      callback(null, data)
-    })
+        first_name: "asd",
+        last_name: "asd",
+        email: "asd@asasdd.com",
+        phone: req.body.phoneNumber
+      }).then(data => {
+        console.log(data)
+        callback(null, data)
+      })
       .catch(err => {
         callback(true)
       })
@@ -125,21 +125,19 @@ app.post('/product-categories', (req, res, next) => {
 
 app.post('/product-detail', (req, res, next) => {
   bigCommerceV3.get('/catalog/products/' + req.body.productId + '?include=images,variants')
-    .then(data => res.json(data)
-    );
+    .then(data => res.json(data));
 });
 
 app.get('/test', (req, res, next) => {
   bigCommerce.get('/payments/methods')
-    .then(data => res.json(data)
-    );
+    .then(data => res.json(data));
 });
 
 app.post('/test1', (req, res, next) => {
-  bigCommerceV3.post('/carts',
-    { line_items: req.body.line_items })
-    .then(data => res.json(data)
-    );
+  bigCommerceV3.post('/carts', {
+      line_items: req.body.line_items
+    })
+    .then(data => res.json(data));
 });
 
 //Creating Order
@@ -187,8 +185,7 @@ app.post('/test2', (req, res, next) => {
 
 app.get('/auth', (req, res, next) => {
   bigCommerce.get('/customers')
-    .then(data => res.json(console.log(data))
-    );
+    .then(data => res.json(console.log(data)));
 });
 
 
