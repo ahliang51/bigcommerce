@@ -13,17 +13,26 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-  <ion-list *ngIf="productCategories">
+  <!-- <ion-list *ngIf="productCategories">
     <ion-item *ngFor="let productCategory of productCategories" padding>
       <ion-thumbnail item-start>
-        <!-- Always display the first image of the image variants -->
         <img src={{productCategory.primary_image.thumbnail_url}}>
       </ion-thumbnail>
       <h2>{{productCategory.name}}</h2>
       <p>${{productCategory.price}}</p>
       <button ion-button clear item-end (click)="viewDetails(productCategory);">View</button>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+
+  <ion-row class="gridRow">
+    <ion-col col-6 *ngFor="let productCategory of productCategories" class="gridRow" (click)="viewDetails(productCategory)">
+      <!-- Always display the first image of the image variants -->
+      <img src={{productCategory.primary_image.thumbnail_url}}>
+      <p>{{productCategory.name}}</p>
+      <p class=" productPrice ">{{productCategory.price | currency}}</p>
+    </ion-col>
+  </ion-row>
+
 </ion-content>

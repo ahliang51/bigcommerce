@@ -40,18 +40,19 @@ export class LoginPage {
   }
 
   onSignUp() {
+
     let permissions = new Array<string>();
     let params = new Array<string>();
-    permissions = ["public_profile"];
+    permissions = ["public_profile", "email"];
     this.fb.login(permissions)
-      .then(function (response) {
+      .then(response => {
         let userId = response.authResponse.userID;
 
         // //Getting name and gender properties
         return userId
       }).then(userId => {
         this.fb.api("/me?fields=name,gender", params)
-          .then(function (user) {
+          .then(user => {
             user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
             console.log(user.name)
             console.log(user.picture)

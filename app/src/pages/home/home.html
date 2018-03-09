@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header> -->
 
-<ion-content padding>
+<ion-content>
   <ion-grid *ngIf="categories?.length > 1">
     <ion-row *ngFor="let category of categories">
       <div class="background middle-text" padding [style.background-image]="'url(' + category.image_file + ')'" (click)="viewProducts(category.id,category.name)">

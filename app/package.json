@@ -63,7 +63,7 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-facebook4": {
                 "APP_ID": "285658675299786",
-                "APP_NAME": "2d8ba6354c7906da9679447b4d66ea0b"
+                "APP_NAME": "gesel"
             },
             "cordova-sqlite-storage": {},
             "cordova-plugin-network-information": {}

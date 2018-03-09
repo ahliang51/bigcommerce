@@ -12,7 +12,7 @@
   </div>
 
   <ion-list>
-    <ion-item *ngFor="let item of cartArray; let i = index" padding>
+    <ion-item *ngFor="let item of cartArray; let i = index">
       <ion-thumbnail item-start>
         <!-- Display the first image of the product  -->
         <img src={{item.imagesUrl}}>
@@ -26,6 +26,11 @@
       <button ion-button outline (click)="onRemove(i)">
         <ion-icon class="fa fa-times"></ion-icon>
         Remove
+      </button>
+
+      <button ion-button outline>
+        <ion-icon class="fa fa-edit"></ion-icon>
+        Edit
       </button>
 
     </ion-item>

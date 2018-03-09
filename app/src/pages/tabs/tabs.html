@@ -3,14 +3,14 @@
   <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
   <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
 </ion-tabs> -->
-<ion-header>
-  <ion-navbar>
+<ion-header no-border>
+  <ion-navbar class="navBar" no-border>
     <ion-title>{{pageTitle}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content no-bounce>
 
-  <super-tabs id="mainTabs" selectedTabIndex="0" toolbarColor="dark" toolbarBackground="light" [config]="{ sideMenu: 'left' }"
+  <super-tabs id="mainTabs" selectedTabIndex="0" toolbarColor="dark" toolbarBackground="white" [config]="{ sideMenu: 'left' }"
     (tabSelect)="onTabSelect($event)">
     <super-tab [root]="tab1Root" icon="home"></super-tab>
     <super-tab [root]="tab2Root" icon="cart"></super-tab>

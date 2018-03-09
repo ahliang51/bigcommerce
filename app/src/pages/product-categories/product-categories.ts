@@ -20,6 +20,7 @@ export class ProductCategoriesPage {
   categoryId;
   categoryName;
   productCategories = [];
+  gridRows = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,8 +40,10 @@ export class ProductCategoriesPage {
     this.productService.retrieveProductCategories(this.categoryId).subscribe(data => {
       // console.log(data)
       this.productCategories = data;
+
       loading.dismiss();
       console.log(this.productCategories)
+      console.log(this.gridRows);
     })
   }
 

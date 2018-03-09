@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Pipe, PipeTransform } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
 import { ProductCategoriesPage } from '../product-categories/product-categories';
@@ -39,4 +39,19 @@ export class HomePage {
     })
 
   }
+}
+
+@Pipe({
+  name: 'toRows'
+})
+export class ToRowsPipe implements PipeTransform {
+
+  transform<T>(value: T[], perRow: number): T[][] {
+    let rows: T[][] = [];
+    for (let i = 0; i < value.length; i += perRow) {
+      rows.push(value.slice(i, i + perRow))
+    }
+    return rows;
+  }
+
 }

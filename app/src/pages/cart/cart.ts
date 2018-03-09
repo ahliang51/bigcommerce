@@ -57,8 +57,8 @@ export class CartPage {
 
   onRemove(index) {
     if (this.cartArray.length > 1) {
-      this.cartArray.splice(index, 1);
       this.totalAmount = this.totalAmount - this.cartArray[index].price;
+      this.cartArray.splice(index, 1);
       this.storage.set('cart', this.cartArray).then(() => {
         this.ionViewWillEnter();
       });
