@@ -28,10 +28,11 @@
         Remove
       </button>
 
-      <button ion-button outline>
+      <button ion-button outline (click)="onEdit(i)">
         <ion-icon class="fa fa-edit"></ion-icon>
         Edit
       </button>
+
 
     </ion-item>
   </ion-list>
@@ -44,6 +45,7 @@
       S$ {{totalAmount | number : '1.2'}}
     </div>
   </div>
+
 
   <!-- Only show when there is product in the cart  -->
   <div text-center *ngIf="cartArray?.length > 0">

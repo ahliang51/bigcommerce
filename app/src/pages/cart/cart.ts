@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+
 
 /**
  * Generated class for the CartPage page.
@@ -16,13 +17,26 @@ import { Storage } from '@ionic/storage';
 })
 export class CartPage {
 
+  testradioOpen: boolean;
+  testradioResult;
   cartArray = [];
   totalAmount = 0.00;
+  quantity;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController) {
+
+    this.quantity = [{
+      name: 'col1',
+      options: [
+        { text: '1', value: '1' },
+        { text: '2', value: '2' },
+        { text: '3', value: '3' }
+      ]
+    }]
   }
 
   ionViewWillEnter() {
@@ -73,6 +87,45 @@ export class CartPage {
         loading.dismiss();
       })
     }
+  }
+
+  onEdit(index) {
+    let alert = this.alertCtrl.create({
+      title: 'Select Quantity',
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: '1',
+      value: '1',
+      checked: true
+    });
+
+    for (let i = 2; i <= 10; i++) {
+      alert.addInput({
+        type: 'radio',
+        label: i.toString(),
+        value: i.toString()
+      });
+    }
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'Update',
+      handler: data => {
+        console.log('radio data:', data);
+        this.testradioOpen = false;
+        this.testradioResult = data;
+
+        this.cartArray[index].quantity = data;
+        this.storage.set('cart', this.cartArray).then(() => {
+          this.ionViewWillEnter();
+        });
+      }
+    });
+    alert.present().then(() => {
+      this.testradioOpen = true;
+    });
   }
 
 }

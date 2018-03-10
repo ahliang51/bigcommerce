@@ -40,6 +40,7 @@
         "cordova-plugin-whitelist": "^1.3.3",
         "cordova-sqlite-storage": "^2.2.1",
         "font-awesome": "^4.7.0",
+        "ion-multi-picker": "^2.1.2",
         "ionic-angular": "3.9.2",
         "ionic2-super-tabs": "^4.2.2",
         "ionicons": "3.0.0",
