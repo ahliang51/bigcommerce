@@ -22,7 +22,6 @@ import { CartPage } from '../pages/cart/cart';
 import { ProfilePage } from '../pages/profile/profile';
 import { Facebook } from '@ionic-native/facebook';
 
-import { MultiPickerModule } from 'ion-multi-picker';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,6 @@ import { MultiPickerModule } from 'ion-multi-picker';
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),
     IonicStorageModule.forRoot(),
-    MultiPickerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -39,9 +39,12 @@ export class ProductCategoriesPage {
     loading.present();
     this.productService.retrieveProductCategories(this.categoryId).subscribe(data => {
       // console.log(data)
-      this.productCategories = data;
-
+      if (data.length > 1) {
+        this.productCategories = data;
+      }
       loading.dismiss();
+
+
       console.log(this.productCategories)
       console.log(this.gridRows);
     })

@@ -12,7 +12,7 @@ import { Network } from '@ionic-native/network';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = TabsPage;
+  rootPage: any;
 
   constructor(platform: Platform,
     statusBar: StatusBar,
@@ -25,6 +25,7 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
+      this.rootPage = LoginPage;
 
       // watch network for a disconnect
       let disconnectSubscription = network.onDisconnect().subscribe(() => {

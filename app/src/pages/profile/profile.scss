@@ -1,3 +1,12 @@
-page-profile {
+page-profile {}
 
+.profilePicture {
+  display: inline-block;
+  width: auto;
+  height: 150px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  margin: auto;
 }

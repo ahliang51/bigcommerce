@@ -22,6 +22,7 @@ export class CartPage {
   cartArray = [];
   totalAmount = 0.00;
   quantity;
+  cartSize;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,7 +42,7 @@ export class CartPage {
 
   ionViewWillEnter() {
     console.log(this.cartArray)
-
+    this.cartArray = [];
     //Initialise back to 0
     this.totalAmount = 0.00;
 
@@ -65,6 +66,7 @@ export class CartPage {
         console.log(this.totalAmount)
       }
 
+      this.cartSize = this.cartArray.length;
       loading.dismiss();
     })
   }
@@ -78,13 +80,8 @@ export class CartPage {
       });
     }
     else {
-      // Loading
-      let loading = this.loadingCtrl.create({
-        content: 'Please wait...'
-      });
-      loading.present();
       this.storage.remove('cart').then(() => {
-        loading.dismiss();
+        this.ionViewWillEnter();
       })
     }
   }

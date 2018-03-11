@@ -1,14 +1,15 @@
-page-product-detail {
-
-}
+page-product-detail {}
 
 .productTitle {
-    font-weight: bold;
-    font-size: medium
-  }
-  
-  .addToCart{
-    position: -webkit-sticky;
-    position: sticky;
-    bottom: 0;
-  }
+  font-weight: bold;
+  font-size: medium
+}
+
+.addToCart {
+  // position: -webkit-sticky;
+  // position: sticky;
+  // bottom: 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
