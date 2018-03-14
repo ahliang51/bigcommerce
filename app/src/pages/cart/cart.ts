@@ -48,7 +48,8 @@ export class CartPage {
 
     // Loading
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      duration: 10000
     });
     loading.present();
 

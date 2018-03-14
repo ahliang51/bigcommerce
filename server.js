@@ -4,6 +4,7 @@ let express = require('express'),
   bodyParser = require('body-parser'),
   async = require('async'),
   http = require('http'),
+  jwt = require('jsonwebtoken'),
   BigCommerce = require('node-bigcommerce'),
   MongoClient = require('mongodb').MongoClient,
   db;
@@ -34,7 +35,7 @@ MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/bi
 
 
 let storeImagePath = 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/';
-
+let jwtSecret = "Gesel@123"
 
 
 
@@ -56,7 +57,8 @@ app.use(function (req, res, next) {
 app.post('/sign-up', (req, res, next) => {
   async.waterfall([
     createUserEcommerce,
-    createUserMongo
+    createUserMongo,
+    generateToken
   ], function (err, result) {
     if (err) {
       res.json({
@@ -65,6 +67,7 @@ app.post('/sign-up', (req, res, next) => {
     } else {
       res.json({
         success: true,
+        token: result
       })
     }
   });
@@ -94,6 +97,19 @@ app.post('/sign-up', (req, res, next) => {
     // .catch(err => {
     //   callback(true)
     // })
+  }
+
+  function generateToken(result, callback) {
+    jwt.sign({
+      customerEcommerceId: result.id
+    }, jwtSecret, {
+      expiresIn: '7d'
+    }, function (err, token) {
+      if (err)
+        callback(true)
+      else
+        callback(null, token)
+    })
   }
 
 });
@@ -146,7 +162,8 @@ app.post('/check-user-exist', (req, res, next) => {
 app.post('/update-user-mobile', (req, res, next) => {
   async.waterfall([
     updateEcommerce,
-    updateMongo
+    updateMongo,
+    generateToken
   ], function (err, result) {
     if (err) {
       res.json({
@@ -155,6 +172,7 @@ app.post('/update-user-mobile', (req, res, next) => {
     } else {
       res.json({
         success: true,
+        token: result
       })
     }
   });
@@ -180,7 +198,60 @@ app.post('/update-user-mobile', (req, res, next) => {
       })
       .catch(err => callback(true))
   }
+
+  function generateToken(result, callback) {
+    jwt.sign({
+      customerEcommerceId: req.body.userId
+    }, jwtSecret, {
+      expiresIn: '7d'
+    }, function (err, token) {
+      if (err)
+        callback(true)
+      else
+        callback(null, token)
+    })
+  }
 })
+
+app.post('/retrieve-user-info', (req, res, next) => {
+
+  async.waterfall([
+    verifyToken,
+    retrieveUserInfo,
+  ], function (err, result) {
+    if (err) {
+      res.json({
+        success: false,
+        error: err
+      })
+    } else {
+      res.json({
+        success: true,
+        result: result
+      })
+    }
+  });
+
+  function verifyToken(callback) {
+    jwt.verify(req.body.jwt, jwtSecret, function (err, decoded) {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, decoded);
+      }
+    });
+  };
+
+  function retrieveUserInfo(result, callback) {
+    bigCommerce.get('/customers/' + result.customerEcommerceId)
+      .then(data => {
+        callback(null, data)
+      })
+  }
+
+
+});
+
 
 app.post('/test1', (req, res, next) => {
   bigCommerceV3.post('/carts', {

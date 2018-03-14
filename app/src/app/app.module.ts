@@ -23,6 +23,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { Facebook } from '@ionic-native/facebook';
 import { VerifyNumberPage } from '../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
+import { ProfileProvider } from '../providers/profile/profile';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { Sim } from '@ionic-native/sim';
     ProductProvider,
     Facebook,
     Network,
-    Sim
+    Sim,
+    ProfileProvider
   ]
 })
 export class AppModule { }

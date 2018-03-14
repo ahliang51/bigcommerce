@@ -95,9 +95,4 @@ export class LoginPage {
       .catch(e => console.log('Error logging into Facebook' + JSON.stringify(e)));
   }
 
-  onSignOut() {
-    this.fb.logout().then(result => {
-      console.log(JSON.stringify(result))
-    })
-  }
 }

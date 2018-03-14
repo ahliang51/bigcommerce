@@ -21,10 +21,12 @@ export class HomePage {
   }
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      duration: 10000
     });
 
     loading.present();
+
     this.productService.retrieveCategories().subscribe(data => {
       console.log(data);
       this.categories = data;
@@ -39,19 +41,4 @@ export class HomePage {
     })
 
   }
-}
-
-@Pipe({
-  name: 'toRows'
-})
-export class ToRowsPipe implements PipeTransform {
-
-  transform<T>(value: T[], perRow: number): T[][] {
-    let rows: T[][] = [];
-    for (let i = 0; i < value.length; i += perRow) {
-      rows.push(value.slice(i, i + perRow))
-    }
-    return rows;
-  }
-
 }

@@ -1,6 +1,6 @@
 import { LoginProvider } from './../../providers/login/login';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Sim } from '@ionic-native/sim';
 import { Storage } from '@ionic/storage';
 import { TabsPage } from '../tabs/tabs';
@@ -37,7 +37,8 @@ export class VerifyNumberPage {
     private storage: Storage,
     private loginService: LoginProvider,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController) {
   }
 
 
@@ -66,10 +67,17 @@ export class VerifyNumberPage {
   onConfirm() {
     //Sets the loading spinner
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait...',
+      duration: 10000
     });
 
     loading.present();
+
+    let toast = this.toastCtrl.create({
+      message: 'You have successfully login',
+      duration: 3000,
+      position: 'bottom'
+    });
 
     //Check whether does user exist in our database
     this.loginService.checkUserExist(this.email).subscribe(data => {
@@ -79,14 +87,12 @@ export class VerifyNumberPage {
         this.loginService.updateUserMobile(data.userId, this.phoneNumber).subscribe(result => {
           console.log(JSON.stringify(result))
           if (result.success) {
-            let alert = this.alertCtrl.create({
-              title: 'Success',
-              subTitle: 'You have successfully login',
-              buttons: ['Dismiss']
-            });
-            loading.dismiss();
-            alert.present();
-            this.navCtrl.setRoot(TabsPage)
+
+            this.storage.set('token', result.token).then(() => {
+              loading.dismiss();
+              toast.present();
+              this.navCtrl.setRoot(TabsPage)
+            })
           }
         })
       }
@@ -96,16 +102,12 @@ export class VerifyNumberPage {
           console.log(JSON.stringify(result))
 
           if (result.success) {
-            let alert = this.alertCtrl.create({
-              title: 'Success',
-              subTitle: 'You have successfully login',
-              buttons: ['Dismiss']
-            });
-            loading.dismiss();
-            alert.present();
-            this.navCtrl.setRoot(TabsPage)
+            this.storage.set('token', result.token).then(() => {
+              loading.dismiss();
+              toast.present();
+              this.navCtrl.setRoot(TabsPage)
+            })
           }
-
         })
       }
     })
