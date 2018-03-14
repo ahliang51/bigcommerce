@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Facebook } from '@ionic-native/facebook';
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the ProfilePage page.
@@ -21,10 +23,11 @@ export class ProfilePage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private storage: Storage) {
+    private storage: Storage,
+    private fb: Facebook) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log('ionViewDidLoad ProfilePage');
     this.storage.get('user').then(result => {
       console.log(JSON.stringify(result))
@@ -33,4 +36,13 @@ export class ProfilePage {
     })
   }
 
+
+  onSignOut() {
+    this.fb.logout().then(result => {
+      console.log(JSON.stringify(result))
+      if (result == "OK") {
+        this.navCtrl.setRoot(LoginPage)
+      }
+    })
+  }
 }

@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { Network } from '@ionic-native/network';
+import { Facebook } from '@ionic-native/facebook';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +20,8 @@ export class MyApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     network: Network,
-    sim: Sim
+    sim: Sim,
+    fb: Facebook,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -27,7 +29,17 @@ export class MyApp {
       // statusBar.styleDefault();
       splashScreen.hide();
 
-      this.rootPage = LoginPage;
+      fb.getLoginStatus().then(result => {
+        console.log(JSON.stringify(result))
+        if (result.status == "connected") {
+          this.rootPage = TabsPage;
+          // this.rootPage = LoginPage;
+        }
+        else {
+          this.rootPage = LoginPage;
+        }
+      })
+
 
 
       // // watch network for a disconnect

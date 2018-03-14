@@ -38,14 +38,14 @@ export class LoginPage {
   ionViewWillEnter() {
     console.log('ionViewDidLoad LoginPage');
 
-    // //Check for permission for SIM
-    // this.sim.requestReadPermission().then(
-    //   () => {
-    //     console.log('Permission granted')
-    //     this.simPermission = true;
-    //   },
-    //   () => this.ionViewWillEnter()
-    // );
+    //Check for permission for SIM
+    this.sim.requestReadPermission().then(
+      () => {
+        console.log('Permission granted')
+        this.simPermission = true;
+      },
+      () => this.ionViewWillEnter()
+    );
 
 
     // this.fb.getLoginStatus().then(result => {
@@ -84,13 +84,13 @@ export class LoginPage {
               email: user.email
             })
           });
-
-        if (this.verifyNumberPage) {
-          this.navCtrl.push(VerifyNumberPage)
-        }
-        else {
-          this.navCtrl.setRoot(TabsPage);
-        }
+        this.navCtrl.push(VerifyNumberPage)
+        // if (this.verifyNumberPage) {
+        //   this.navCtrl.push(VerifyNumberPage)
+        // }
+        // else {
+        //   this.navCtrl.setRoot(TabsPage);
+        // }
       })
       .catch(e => console.log('Error logging into Facebook' + JSON.stringify(e)));
   }
