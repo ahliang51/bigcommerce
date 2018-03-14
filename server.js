@@ -27,10 +27,10 @@ let app = express(),
     apiVersion: 'v3'
   });
 
-// MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
-//   if (err) return console.log(err)
-//   db = database.db('big-commerce');
-// });
+MongoClient.connect('mongodb://shengliang:bigcommerce@ds147118.mlab.com:47118/big-commerce', (err, database) => {
+  if (err) return console.log(err)
+  db = database.db('big-commerce');
+});
 
 
 let storeImagePath = 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/';
@@ -51,16 +51,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-//Login Route
-/*
-  1) User send email and password
-  2) Check for email to retrieve customer ID
-  3) Use https://api.bigcommerce.com/stores/rf1n0ws0yc/v2/customers/1/validate to validate password
-*/
 
 //Writing for sign up 
 app.post('/sign-up', (req, res, next) => {
-
   async.waterfall([
     createUserEcommerce,
     createUserMongo
@@ -78,17 +71,17 @@ app.post('/sign-up', (req, res, next) => {
 
   function createUserEcommerce(callback) {
     bigCommerce.post('/customers', {
-        first_name: "asd",
-        last_name: "asd",
-        email: "asd@asasdd.com",
-        phone: req.body.phoneNumber
-      }).then(data => {
-        console.log(data)
-        callback(null, data)
-      })
-      .catch(err => {
-        callback(true)
-      })
+      first_name: req.body.name,
+      last_name: " ",
+      email: req.body.email,
+      phone: req.body.phoneNumber
+    }).then(data => {
+      console.log(data)
+      callback(null, data)
+    })
+    // .catch(err => {
+    //   callback(true)
+    // })
   }
 
   function createUserMongo(result, callback) {
@@ -98,6 +91,9 @@ app.post('/sign-up', (req, res, next) => {
     }).then(result => {
       callback(null, result)
     })
+    // .catch(err => {
+    //   callback(true)
+    // })
   }
 
 });
@@ -128,10 +124,63 @@ app.post('/product-detail', (req, res, next) => {
     .then(data => res.json(data));
 });
 
-app.get('/test', (req, res, next) => {
-  bigCommerce.get('/payments/methods')
-    .then(data => res.json(data));
+app.post('/check-user-exist', (req, res, next) => {
+  bigCommerce.get('/customers?email=' + req.body.email)
+    .then(data => {
+      if (data) {
+        // There is such email
+        res.json({
+          userId: data[0].id,
+          userExist: true
+        })
+      }
+      // There is no such email
+      else {
+        res.json({
+          userExist: false
+        })
+      }
+    })
 });
+
+app.post('/update-user-mobile', (req, res, next) => {
+  async.waterfall([
+    updateEcommerce,
+    updateMongo
+  ], function (err, result) {
+    if (err) {
+      res.json({
+        success: false
+      })
+    } else {
+      res.json({
+        success: true,
+      })
+    }
+  });
+
+  function updateEcommerce(callback) {
+    bigCommerce.put('/customers/' + req.body.userId, {
+        phone: req.body.phoneNumber
+      })
+      .then(result => {
+        callback(null, result)
+      })
+      .catch(err => callback(true))
+  }
+
+  function updateMongo(result, callback) {
+    db.collection('users').update({
+        customerEcommerceId: req.body.userId
+      }, {
+        phoneNumber: req.body.phoneNumber
+      })
+      .then(result => {
+        callback(null, result)
+      })
+      .catch(err => callback(true))
+  }
+})
 
 app.post('/test1', (req, res, next) => {
   bigCommerceV3.post('/carts', {

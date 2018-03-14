@@ -1,3 +1,5 @@
+import { Sim } from '@ionic-native/sim';
+import { VerifyNumberPage } from './../verify-number/verify-number';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoginProvider } from '../../providers/login/login';
@@ -20,33 +22,41 @@ import { Storage } from '@ionic/storage';
 export class LoginPage {
 
   facebookAppID = 589248748091275;
+  simPermission = false;
+
+  verifyNumberPage = false; // For user to verify their mobile number
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private loginService: LoginProvider,
     private fb: Facebook,
-    private storage: Storage
+    private storage: Storage,
+    private sim: Sim
   ) {
-    // this.fb.browserInit(this.facebookAppID, "v2.9");
   }
 
   ionViewWillEnter() {
     console.log('ionViewDidLoad LoginPage');
-    // console.log(this.storage.get('phoneNumber'))
-    this.fb.getLoginStatus().then(result => {
-      console.log(JSON.stringify(result))
-      if (result.status == "connected") {
-        this.navCtrl.setRoot(TabsPage);
-      }
-    })
+
+    // //Check for permission for SIM
+    // this.sim.requestReadPermission().then(
+    //   () => {
+    //     console.log('Permission granted')
+    //     this.simPermission = true;
+    //   },
+    //   () => this.ionViewWillEnter()
+    // );
 
 
-  }
-
-  onSignIn(phoneNumber) {
-    this.loginService.signIn(phoneNumber).subscribe(data => {
-      console.log(data);
-    })
+    // this.fb.getLoginStatus().then(result => {
+    //   console.log(JSON.stringify(result))
+    //   if (result.status == "connected") {
+    //     this.navCtrl.setRoot(TabsPage);
+    //   }
+    //   else {
+    //     this.verifyNumberPage = true;
+    //   }
+    // })
   }
 
   onSignUp() {
@@ -74,7 +84,13 @@ export class LoginPage {
               email: user.email
             })
           });
-        this.navCtrl.setRoot(TabsPage);
+
+        if (this.verifyNumberPage) {
+          this.navCtrl.push(VerifyNumberPage)
+        }
+        else {
+          this.navCtrl.setRoot(TabsPage);
+        }
       })
       .catch(e => console.log('Error logging into Facebook' + JSON.stringify(e)));
   }

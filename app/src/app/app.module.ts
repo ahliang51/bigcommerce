@@ -21,6 +21,8 @@ import { ProductDetailPage } from '../pages/product-detail/product-detail';
 import { CartPage } from '../pages/cart/cart';
 import { ProfilePage } from '../pages/profile/profile';
 import { Facebook } from '@ionic-native/facebook';
+import { VerifyNumberPage } from '../pages/verify-number/verify-number';
+import { Sim } from '@ionic-native/sim';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     TabsPage,
     ProductCategoriesPage,
-    ProductDetailPage
+    ProductDetailPage,
+    VerifyNumberPage
   ],
   imports: [
     HttpModule,
@@ -50,7 +53,8 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     TabsPage,
     ProductCategoriesPage,
-    ProductDetailPage
+    ProductDetailPage,
+    VerifyNumberPage
   ],
   providers: [
     StatusBar,
@@ -59,7 +63,8 @@ import { Facebook } from '@ionic-native/facebook';
     LoginProvider,
     ProductProvider,
     Facebook,
-    Network
+    Network,
+    Sim
   ]
 })
 export class AppModule { }
