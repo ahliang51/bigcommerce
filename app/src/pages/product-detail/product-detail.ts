@@ -1,3 +1,4 @@
+import { CartProvider } from './../../providers/cart/cart';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
@@ -29,7 +30,8 @@ export class ProductDetailPage {
     private productService: ProductProvider,
     private loadingCtrl: LoadingController,
     private storage: Storage,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private cartService: CartProvider) {
     this.productId = navParams.get("productId")
     console.log(this.productId)
   }
@@ -53,50 +55,11 @@ export class ProductDetailPage {
   }
 
   onAddToCart() {
-
-    this.storage.get('cart').then(result => {
-
-
-      console.log(result)
-      //There is a cart already
-      if (result) {
-        let itemExist = false;
-        for (let item of result) {
-
-          // There is such item in the cart already
-          if (item.productId == this.productId) {
-            console.log(item.quantity)
-            item.quantity = item.quantity + 1; // there is problem here, quantity is not updated
-            itemExist = true;
-          }
-        }
-        //No such item in the cart
-
-        if (!itemExist) {
-          result.push({
-            "productName": this.productDetails.name,
-            "productId": this.productId,
-            "quantity": 1,
-            "imagesUrl": this.productDetails.images[0].url_thumbnail,
-            "price": this.productDetails.price
-          })
-        }
-        this.storage.set('cart', result);
-
-      }
-      //There are no cart
-      else {
-        this.storage.set('cart',
-          [{
-            "productName": this.productDetails.name,
-            "productId": this.productId,
-            "quantity": 1,
-            "imagesUrl": this.productDetails.images[0].url_thumbnail,
-            "price": this.productDetails.price
-          }]
-        )
-      }
-    })
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      duration: 10000
+    });
+    loading.present();
 
     let toast = this.toastCtrl.create({
       message: 'Added To Cart',
@@ -104,8 +67,46 @@ export class ProductDetailPage {
       position: 'bottom'
     });
 
-    toast.present();
-    this.navCtrl.pop();
+    this.storage.get('cart').then(result => {
+      console.log(JSON.stringify(result))
+      //There is a cart already
+      if (result) {
+        this.storage.get('cart').then(cart => {
+          // Add item to cart
+          let item = [{
+            "quantity": 1,
+            "product_id": this.productId
+          }
+          ]
+          this.cartService.addToCart(cart, item).subscribe(data => {
+            console.log(JSON.stringify(data));
+            loading.dismiss();
+            toast.present();
+            this.navCtrl.pop();
+
+          })
+        })
+      }
+      //There are no cart
+      else {
+        this.storage.get('token').then(token => {
+          let cart = [{
+            "quantity": 1,
+            "product_id": this.productId
+          }
+          ]
+          this.cartService.createCart(token, cart).subscribe(result => {
+            console.log(JSON.stringify(result))
+            this.storage.set('cart', result.data.id)
+            loading.dismiss();
+            toast.present();
+            this.navCtrl.pop();
+          })
+        })
+
+      }
+    })
+
   }
 
 }

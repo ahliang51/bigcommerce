@@ -46,8 +46,8 @@ export class ProductCategoriesPage {
       loading.dismiss();
 
 
-      console.log(this.productCategories)
-      console.log(this.gridRows);
+      // console.log(this.productCategories)
+      // console.log(this.gridRows);
     })
   }
 

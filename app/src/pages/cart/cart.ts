@@ -1,3 +1,4 @@
+import { CartProvider } from './../../providers/cart/cart';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -28,7 +29,8 @@ export class CartPage {
     public navParams: NavParams,
     private storage: Storage,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private cartService: CartProvider) {
 
     this.quantity = [{
       name: 'col1',
@@ -43,6 +45,8 @@ export class CartPage {
   ionViewWillEnter() {
     console.log(this.cartArray)
     this.cartArray = [];
+    this.cartSize = '';
+
     //Initialise back to 0
     this.totalAmount = 0.00;
 
@@ -52,24 +56,40 @@ export class CartPage {
       duration: 10000
     });
     loading.present();
-
-    //Retrieve Data
-    this.storage.get('cart').then(result => {
-      // If there is data then assign to cartArray, if not dont assign anything
-      if (result) {
-        this.cartArray = result;
+    this.storage.get('cart').then(cart => {
+      if (cart) {
+        this.cartService.retrieveCart(cart).subscribe(result => {
+          console.log(JSON.stringify(result))
+          if (result) {
+            this.cartArray = result.data.line_items.physical_items
+          }
+          this.cartSize = this.cartArray.length;
+          this.totalAmount = result.data.cart_amount;
+          loading.dismiss();
+        })
       }
-      console.log(this.cartArray)
-    }).then(() => {
-      //Calculate total amount
-      for (let amount of this.cartArray) {
-        this.totalAmount = this.totalAmount + (amount.price * amount.quantity);
-        console.log(this.totalAmount)
+      else {
+        loading.dismiss();
       }
-
-      this.cartSize = this.cartArray.length;
-      loading.dismiss();
     })
+
+    // // //Retrieve Data
+    // // this.storage.get('cart').then(result => {
+    // //   // If there is data then assign to cartArray, if not dont assign anything
+    // //   if (result) {
+    // //     this.cartArray = result;
+    // //   }
+    // //   console.log(this.cartArray)
+    // // }).then(() => {
+    // //   //Calculate total amount
+    // //   for (let amount of this.cartArray) {
+    // //     this.totalAmount = this.totalAmount + (amount.price * amount.quantity);
+    // //     console.log(this.totalAmount)
+    // //   }
+
+    // //   this.cartSize = this.cartArray.length;
+    //   loading.dismiss();
+    // })
   }
 
   onRemove(index) {
@@ -87,19 +107,17 @@ export class CartPage {
         {
           text: 'Remove',
           handler: () => {
-            console.log('Buy clicked');
             if (this.cartArray.length > 1) {
-              this.totalAmount = this.totalAmount - this.cartArray[index].price;
-              this.cartArray.splice(index, 1);
-              this.storage.set('cart', this.cartArray).then(() => {
-                this.ionViewWillEnter();
-              });
-            }
-            else {
-              this.storage.remove('cart').then(() => {
-                this.ionViewWillEnter();
+              this.storage.get('cart').then(cart => {
+                this.cartService.removeItem(cart, this.cartArray[index].id).subscribe(result => {
+                })
               })
             }
+            else {
+              this.storage.remove('cart');
+            }
+            this.ionViewWillEnter();
+
           }
         }
       ]
@@ -138,10 +156,17 @@ export class CartPage {
         this.testradioOpen = false;
         this.testradioResult = data;
 
-        this.cartArray[index].quantity = data;
-        this.storage.set('cart', this.cartArray).then(() => {
-          this.ionViewWillEnter();
-        });
+        this.storage.get('cart').then(cart => {
+          this.cartService.updateCart(cart, this.cartArray[index].id, this.cartArray[index].product_id, data).subscribe(result => {
+            this.ionViewWillEnter();
+          })
+
+        })
+
+        // this.cartArray[index].quantity = data;
+        // this.storage.set('cart', this.cartArray).then(() => {
+        //   this.ionViewWillEnter();
+        // });
       }
     });
     alert.present().then(() => {
