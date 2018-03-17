@@ -73,18 +73,41 @@ export class CartPage {
   }
 
   onRemove(index) {
-    if (this.cartArray.length > 1) {
-      this.totalAmount = this.totalAmount - this.cartArray[index].price;
-      this.cartArray.splice(index, 1);
-      this.storage.set('cart', this.cartArray).then(() => {
-        this.ionViewWillEnter();
-      });
-    }
-    else {
-      this.storage.remove('cart').then(() => {
-        this.ionViewWillEnter();
-      })
-    }
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Remove',
+      message: 'Do you want to remove this item?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Remove',
+          handler: () => {
+            console.log('Buy clicked');
+            if (this.cartArray.length > 1) {
+              this.totalAmount = this.totalAmount - this.cartArray[index].price;
+              this.cartArray.splice(index, 1);
+              this.storage.set('cart', this.cartArray).then(() => {
+                this.ionViewWillEnter();
+              });
+            }
+            else {
+              this.storage.remove('cart').then(() => {
+                this.ionViewWillEnter();
+              })
+            }
+          }
+        }
+      ]
+    });
+    alert.present();
+
+
+
   }
 
   onEdit(index) {

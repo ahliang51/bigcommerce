@@ -31,6 +31,7 @@ export class ProductDetailPage {
     private storage: Storage,
     private toastCtrl: ToastController) {
     this.productId = navParams.get("productId")
+    console.log(this.productId)
   }
 
   ionViewDidLoad() {

@@ -64,37 +64,16 @@ app.use('/auth', auth);
 app.use('/product', product);
 app.use('/profile', profile);
 
-// app.get('/categories', (req, res, next) => {
-//   bigCommerce.get('/categories')
-//     .then(data => {
-//       for (let temp of data) {
-//         temp.image_file = storeImagePath + temp.image_file;
-//       }
-//       res.json(data)
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     })
-// });
-
-// app.post('/product-categories', (req, res, next) => {
-//   bigCommerce.get('/products?category=' + req.body.categoryId)
-//     .then(data => {
-//       res.json(data)
-//     })
-// });
-
-
-// app.post('/product-detail', (req, res, next) => {
-//   bigCommerceV3.get('/catalog/products/' + req.body.productId + '?include=images,variants')
-//     .then(data => res.json(data));
-// });
-
 
 app.post('/test1', (req, res, next) => {
   bigCommerceV3.post('/carts', {
       line_items: req.body.line_items
     })
+    .then(data => res.json(data));
+});
+
+app.post('/tes', (req, res, next) => {
+  bigCommerceV3.post('/carts/' + req.body.cartId + '/redirect_urls')
     .then(data => res.json(data));
 });
 
