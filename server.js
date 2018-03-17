@@ -32,7 +32,8 @@ let app = express(),
 //Import Routes
 let auth = require('./routes/auth'),
   product = require('./routes/product'),
-  profile = require('./routes/profile')
+  profile = require('./routes/profile'),
+  cart = require('./routes/cart')
 
 
 MongoClient.connect(config.database, (err, database) => {
@@ -63,6 +64,7 @@ app.use(function (req, res, next) {
 app.use('/auth', auth);
 app.use('/product', product);
 app.use('/profile', profile);
+app.use('/cart', cart);
 
 
 app.post('/test1', (req, res, next) => {
@@ -76,6 +78,7 @@ app.post('/tes', (req, res, next) => {
   bigCommerceV3.post('/carts/' + req.body.cartId + '/redirect_urls')
     .then(data => res.json(data));
 });
+
 
 //Creating Order
 app.post('/test2', (req, res, next) => {

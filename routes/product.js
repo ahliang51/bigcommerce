@@ -15,7 +15,7 @@ router.get('/categories', (req, res, next) => {
             for (let temp of data) {
                 temp.image_file = config.storeImagePath + temp.image_file;
             }
-            console.log(data)
+            // console.log(data)
             res.json(data)
         })
         .catch(err => {
@@ -27,7 +27,7 @@ router.post('/product-categories', (req, res, next) => {
     bigCommerce = req.bigCommerce;
     bigCommerce.get('/products?category=' + req.body.categoryId)
         .then(data => {
-            console.log(data)
+            // console.log(data)
             res.json(data)
         })
 });
