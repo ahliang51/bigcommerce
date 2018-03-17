@@ -14,12 +14,15 @@
 
 
 <ion-content padding>
-  <button ion-button round outline (click)="onSignUp()">
 
-    <a class="btn btn-block btn-social btn-facebook">
-      <span class="fab fa-facebook-square"></span> Sign in with Facebook
-    </a>
-
-  </button>
+  <ion-row>
+    <ion-col text-center>
+      <button ion-button round outline large (click)="onSignUp()" class="facebookButton">
+        <a class="btn btn-block btn-social btn-facebook">
+          <span class="fab fa-facebook-square"></span> Sign in with Facebook
+        </a>
+      </button>
+    </ion-col>
+  </ion-row>
 
 </ion-content>

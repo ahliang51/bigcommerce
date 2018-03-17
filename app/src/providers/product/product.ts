@@ -19,21 +19,21 @@ export class ProductProvider {
   retrieveCategories() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.get(vars.apiUrl + '/categories', { headers: headers })
+    return this.http.get(vars.apiUrl + '/product/categories', { headers: headers })
       .map(res => res.json());
   }
 
   retrieveProductCategories(categoryId) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/product-categories', { categoryId: categoryId }, { headers: headers })
+    return this.http.post(vars.apiUrl + '/product/product-categories', { categoryId: categoryId }, { headers: headers })
       .map(res => res.json());
   }
 
   retrieveProductDetails(productId) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/product-detail', { productId: productId }, { headers: headers })
+    return this.http.post(vars.apiUrl + '/product/product-detail', { productId: productId }, { headers: headers })
       .map(res => res.json());
   }
 }

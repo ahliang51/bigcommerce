@@ -20,7 +20,7 @@ export class LoginProvider {
   signUp(name, email, phoneNumber) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/sign-up',
+    return this.http.post(vars.apiUrl + '/auth/sign-up',
       {
         phoneNumber: phoneNumber,
         name: name,
@@ -32,14 +32,14 @@ export class LoginProvider {
   checkUserExist(email) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/check-user-exist', { email: email }, { headers: headers })
+    return this.http.post(vars.apiUrl + '/auth/check-user-exist', { email: email }, { headers: headers })
       .map(res => res.json());
   }
 
   updateUserMobile(userId, phoneNumber) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/update-user-mobile',
+    return this.http.post(vars.apiUrl + '/auth/update-user-mobile',
       {
         userId: userId,
         phoneNumber: phoneNumber

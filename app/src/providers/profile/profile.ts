@@ -20,7 +20,7 @@ export class ProfileProvider {
   retrieveProfile(token) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/retrieve-user-info', { jwt: token }, { headers: headers })
+    return this.http.post(vars.apiUrl + '/profile/retrieve-user-info', { jwt: token }, { headers: headers })
       .map(res => res.json());
   }
 }
