@@ -17,7 +17,11 @@
   <div *ngIf="containResult">
     <ion-slides pager="true">
       <ion-slide *ngFor="let picture of productDetails.images">
-        <img src={{picture.url_zoom}} alt="">
+        <!-- <img src={{picture.url_zoom}} alt=""> -->
+        <!-- <img [defaultImage]="defaultImage" lazyLoad={{picture.url_zoom}}> -->
+        <img src="{{picture.url_zoom}}" (load)="loaded = true" [ngClass]="{'img-loaded':loaded}" [hidden]="!loaded" />
+        <ion-spinner [ngClass]="{'center':true}" *ngIf="!loaded"></ion-spinner>
+
       </ion-slide>
     </ion-slides>
 

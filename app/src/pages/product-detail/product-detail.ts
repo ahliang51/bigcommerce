@@ -68,7 +68,7 @@ export class ProductDetailPage {
     });
 
     this.storage.get('cart').then(result => {
-      console.log(JSON.stringify(result))
+      // console.log(JSON.stringify(result))
       //There is a cart already
       if (result) {
         this.storage.get('cart').then(cart => {
@@ -79,7 +79,7 @@ export class ProductDetailPage {
           }
           ]
           this.cartService.addToCart(cart, item).subscribe(data => {
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             loading.dismiss();
             toast.present();
             this.navCtrl.pop();
@@ -96,7 +96,7 @@ export class ProductDetailPage {
           }
           ]
           this.cartService.createCart(token, cart).subscribe(result => {
-            console.log(JSON.stringify(result))
+            // console.log(JSON.stringify(result))
             this.storage.set('cart', result.data.id)
             loading.dismiss();
             toast.present();

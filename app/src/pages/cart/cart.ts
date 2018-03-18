@@ -2,6 +2,7 @@ import { CartProvider } from './../../providers/cart/cart';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { ProfileProvider } from '../../providers/profile/profile';
 
 
 /**
@@ -24,13 +25,16 @@ export class CartPage {
   totalAmount = 0.00;
   quantity;
   cartSize;
+  storeCredit;
+  creditBalance = 0.00;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private cartService: CartProvider) {
+    private cartService: CartProvider,
+    private profileService: ProfileProvider) {
 
     this.quantity = [{
       name: 'col1',
@@ -43,7 +47,7 @@ export class CartPage {
   }
 
   ionViewWillEnter() {
-    console.log(this.cartArray)
+    // console.log(this.cartArray)
     this.cartArray = [];
     this.cartSize = '';
 
@@ -59,37 +63,28 @@ export class CartPage {
     this.storage.get('cart').then(cart => {
       if (cart) {
         this.cartService.retrieveCart(cart).subscribe(result => {
-          console.log(JSON.stringify(result))
+          // console.log(JSON.stringify(result))
           if (result) {
             this.cartArray = result.data.line_items.physical_items
           }
           this.cartSize = this.cartArray.length;
           this.totalAmount = result.data.cart_amount;
-          loading.dismiss();
+          this.storage.get('token').then(token => {
+            this.profileService.retrieveProfile(token).subscribe(data => {
+              // console.log(JSON.stringify(data))
+              this.storeCredit = data.result.store_credit;
+              this.creditBalance = parseFloat(this.storeCredit) - this.totalAmount;
+              loading.dismiss();
+            })
+          })
         })
-      }
-      else {
-        loading.dismiss();
       }
     })
 
-    // // //Retrieve Data
-    // // this.storage.get('cart').then(result => {
-    // //   // If there is data then assign to cartArray, if not dont assign anything
-    // //   if (result) {
-    // //     this.cartArray = result;
-    // //   }
-    // //   console.log(this.cartArray)
-    // // }).then(() => {
-    // //   //Calculate total amount
-    // //   for (let amount of this.cartArray) {
-    // //     this.totalAmount = this.totalAmount + (amount.price * amount.quantity);
-    // //     console.log(this.totalAmount)
-    // //   }
 
-    // //   this.cartSize = this.cartArray.length;
-    //   loading.dismiss();
-    // })
+
+
+    console.log(this.storeCredit)
   }
 
   onRemove(index) {
