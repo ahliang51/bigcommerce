@@ -7,6 +7,7 @@ let express = require('express'),
   jwt = require('jsonwebtoken'),
   BigCommerce = require('node-bigcommerce'),
   config = require('./config/config'),
+  cors = require('cors'),
   MongoClient = require('mongodb').MongoClient,
   db;
 
@@ -49,6 +50,8 @@ let port = process.env.PORT || 3000;
 //Body Parser Middleware
 app.use(bodyParser.json());
 
+//CORS
+app.use(cors())
 
 app.use(function (req, res, next) {
   req.db = db;

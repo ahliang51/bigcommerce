@@ -18,8 +18,16 @@ export class ProfileProvider {
   }
 
   retrieveProfile(token) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    let headers = new Headers({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json'
+    });
+    // let headers = new Headers();
+    // headers.append('Access-Control-Allow-Origin', '*'),
+    //   headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT'),
+    //   headers.append('Content-Type', 'application/json');
     return this.http.post(vars.apiUrl + '/profile/retrieve-user-info', { jwt: token }, { headers: headers })
       .map(res => res.json());
   }
