@@ -10,6 +10,7 @@ let express = require('express'),
 router.post('/retrieve-user-info', (req, res, next) => {
     //Retrieve JWT
     jwt = req.jwt;
+    console.log(req.body)
 
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
@@ -41,6 +42,7 @@ router.post('/retrieve-user-info', (req, res, next) => {
     };
 
     function retrieveUserInfo(result, callback) {
+        console.log(result)
         bigCommerce.get('/customers/' + result.customerEcommerceId)
             .then(data => {
                 callback(null, data)

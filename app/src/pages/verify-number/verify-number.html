@@ -17,17 +17,26 @@
   <ion-grid>
     <ion-row>
       <ion-col text-center class="numberHeader">
-        Verify Number
+        Enter Mobile Number
       </ion-col>
     </ion-row>
     <ion-row class="phoneNumber">
       <ion-col text-center>
-        {{phoneNumber}}
+        <ion-item>
+          <!-- <ion-label color="primary" floating>Phone Number</ion-label> -->
+          <ion-input text-center type="number" name="phoneNumber" [(ngModel)]="phoneNumber" (ionChange)="textChange(phoneNumber)" style="text-align:middle">
+          </ion-input>
+        </ion-item>
+        <!-- <ion-label> -->
+        <p class="validateMessage">
+          {{validateMessage}}
+        </p>
+        <!-- </ion-label> -->
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <button ion-button round (click)="onConfirm()">CONFIRM</button>
+        <button ion-button round (click)="onConfirm()" [disabled]="validateNumber">CONFIRM</button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -79,6 +79,9 @@ export class CartPage {
           })
         })
       }
+      else {
+        loading.dismiss();
+      }
     })
 
 

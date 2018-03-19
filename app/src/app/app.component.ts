@@ -1,3 +1,4 @@
+import { VerifyNumberPage } from './../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
@@ -16,6 +17,7 @@ import { Facebook } from '@ionic-native/facebook';
 export class MyApp {
   rootPage: any;
 
+
   constructor(platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
@@ -24,6 +26,7 @@ export class MyApp {
     fb: Facebook,
   ) {
     platform.ready().then(() => {
+      // this.rootPage = VerifyNumberPage
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       // statusBar.styleDefault();
@@ -33,7 +36,6 @@ export class MyApp {
         console.log(JSON.stringify(result))
         if (result.status == "connected") {
           this.rootPage = TabsPage;
-          // this.rootPage = LoginPage;
         }
         else {
           this.rootPage = LoginPage;

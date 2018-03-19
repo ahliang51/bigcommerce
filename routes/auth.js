@@ -55,8 +55,8 @@ router.post('/sign-up', (req, res, next) => {
         db.collection('users').insert({
             customerEcommerceId: result.id,
             phoneNumber: req.body.phoneNumber,
-        }).then(result => {
-            callback(null, result)
+        }).then(data => {
+            callback(null, result.id)
         })
         // .catch(err => {
         //   callback(true)
@@ -65,7 +65,7 @@ router.post('/sign-up', (req, res, next) => {
 
     function generateToken(result, callback) {
         jwt.sign({
-            customerEcommerceId: result.id
+            customerEcommerceId: result
         }, config.jwtSecret, {
             expiresIn: '7d'
         }, function (err, token) {
