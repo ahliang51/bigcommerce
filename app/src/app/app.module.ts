@@ -7,6 +7,8 @@ import { HttpModule } from '@angular/http';
 import { SuperTabsModule } from 'ionic2-super-tabs';
 import { IonicStorageModule } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -25,6 +27,7 @@ import { VerifyNumberPage } from '../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
 import { ProfileProvider } from '../providers/profile/profile';
 import { CartProvider } from '../providers/cart/cart';
+import { OrderPage } from '../pages/order/order';
 
 
 @NgModule({
@@ -37,7 +40,8 @@ import { CartProvider } from '../providers/cart/cart';
     TabsPage,
     ProductCategoriesPage,
     ProductDetailPage,
-    VerifyNumberPage
+    VerifyNumberPage,
+    OrderPage
   ],
   imports: [
     HttpModule,
@@ -56,7 +60,8 @@ import { CartProvider } from '../providers/cart/cart';
     TabsPage,
     ProductCategoriesPage,
     ProductDetailPage,
-    VerifyNumberPage
+    VerifyNumberPage,
+    OrderPage
   ],
   providers: [
     StatusBar,
@@ -68,7 +73,8 @@ import { CartProvider } from '../providers/cart/cart';
     Network,
     Sim,
     ProfileProvider,
-    CartProvider
+    CartProvider,
+    InAppBrowser
   ]
 })
 export class AppModule { }

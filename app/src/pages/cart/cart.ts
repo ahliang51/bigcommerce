@@ -1,8 +1,10 @@
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { CartProvider } from './../../providers/cart/cart';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { OrderPage } from '../order/order';
 
 
 /**
@@ -28,6 +30,7 @@ export class CartPage {
   storeCredit;
   creditBalance = 0.00;
   orderButton = false;
+  rootNavCtrl: NavController;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,7 +38,9 @@ export class CartPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private cartService: CartProvider,
-    private profileService: ProfileProvider) {
+    private profileService: ProfileProvider,
+    private inAppBrowser: InAppBrowser,
+    private platform: Platform, ) {
 
     this.quantity = [{
       name: 'col1',
@@ -45,9 +50,10 @@ export class CartPage {
         { text: '3', value: '3' }
       ]
     }]
+    this.rootNavCtrl = navParams.get('rootNavCtrl');
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     // console.log(this.cartArray)
     this.cartArray = [];
     this.cartSize = '';
@@ -115,14 +121,14 @@ export class CartPage {
               this.storage.get('cart').then(cart => {
                 this.cartService.removeItem(cart, localCart[index].id).subscribe(result => {
                   // console.log(JSON.stringify(result))
-                  this.ionViewWillEnter();
+                  this.ionViewDidEnter();
 
                 })
               })
             }
             else {
               this.storage.remove('cart');
-              this.ionViewWillEnter();
+              this.ionViewDidEnter();
             }
 
           }
@@ -165,7 +171,7 @@ export class CartPage {
 
         this.storage.get('cart').then(cart => {
           this.cartService.updateCart(cart, this.cartArray[index].id, this.cartArray[index].product_id, data).subscribe(result => {
-            this.ionViewWillEnter();
+            this.ionViewDidEnter();
           })
 
         })
@@ -182,12 +188,31 @@ export class CartPage {
   }
 
   checkOut() {
+    let paymentMade = false;
     this.storage.get('cart').then(cartId => {
       this.storage.get('token').then(token => {
-        console.log(cartId)
-        console.log(token)
-        this.cartService.placeOrder(token, cartId).subscribe(result => {
-          console.log(JSON.stringify(result))
+        this.cartService.placeOrder(token, cartId).subscribe(data => {
+          // console.log(JSON.stringify(data))
+          this.platform.ready().then(() => {
+            let browser = this.inAppBrowser.create(data.result, '_blank', {
+              location: 'no',
+              zoom: 'no'
+            });
+
+            browser.on('exit').subscribe(result => {
+              // this.navCtrl.setRoot(CartPage);
+              if (paymentMade) {
+                this.ionViewDidEnter();
+              }
+            })
+
+            browser.on('loadstart').subscribe(event => {
+              if (event.url.includes("order-confirmation")) {
+                paymentMade = true
+                this.storage.remove('cart')
+              }
+            })
+          })
         })
       })
     })
