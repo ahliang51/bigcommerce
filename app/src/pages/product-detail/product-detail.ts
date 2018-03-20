@@ -50,7 +50,10 @@ export class ProductDetailPage {
       this.productDetails = result.data;
       loading.dismiss();
       this.containResult = true;
-      console.log(this.productDetails)
+      // console.log(JSON.stringify(this.productDetails))
+      this.productDetails.images.sort((a, b) => {
+        return b.is_thumbnail - a.is_thumbnail
+      })
     })
   }
 

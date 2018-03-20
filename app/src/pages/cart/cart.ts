@@ -27,6 +27,7 @@ export class CartPage {
   cartSize;
   storeCredit;
   creditBalance = 0.00;
+  orderButton = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -50,6 +51,7 @@ export class CartPage {
     // console.log(this.cartArray)
     this.cartArray = [];
     this.cartSize = '';
+    this.orderButton = false;
 
     //Initialise back to 0
     this.totalAmount = 0.00;
@@ -66,6 +68,7 @@ export class CartPage {
           // console.log(JSON.stringify(result))
           if (result) {
             this.cartArray = result.data.line_items.physical_items
+            console.log(JSON.stringify(this.cartArray))
           }
           this.cartSize = this.cartArray.length;
           this.totalAmount = result.data.cart_amount;
@@ -74,6 +77,9 @@ export class CartPage {
               // console.log(JSON.stringify(data))
               this.storeCredit = data.result.store_credit;
               this.creditBalance = parseFloat(this.storeCredit) - this.totalAmount;
+              if (this.creditBalance < 0) {
+                this.orderButton = true;
+              }
               loading.dismiss();
             })
           })
@@ -83,14 +89,13 @@ export class CartPage {
         loading.dismiss();
       }
     })
-
-
-
-
-    console.log(this.storeCredit)
   }
 
   onRemove(index) {
+    //Creating a local variable to store cart array due to nested callback
+    let localCart = [];
+    localCart = this.cartArray;
+
     let alert = this.alertCtrl.create({
       title: 'Confirm Remove',
       message: 'Do you want to remove this item?',
@@ -106,15 +111,19 @@ export class CartPage {
           text: 'Remove',
           handler: () => {
             if (this.cartArray.length > 1) {
+              // console.log(JSON.stringify(this.cartArray))
               this.storage.get('cart').then(cart => {
-                this.cartService.removeItem(cart, this.cartArray[index].id).subscribe(result => {
+                this.cartService.removeItem(cart, localCart[index].id).subscribe(result => {
+                  // console.log(JSON.stringify(result))
+                  this.ionViewWillEnter();
+
                 })
               })
             }
             else {
               this.storage.remove('cart');
+              this.ionViewWillEnter();
             }
-            this.ionViewWillEnter();
 
           }
         }
@@ -170,6 +179,18 @@ export class CartPage {
     alert.present().then(() => {
       this.testradioOpen = true;
     });
+  }
+
+  checkOut() {
+    this.storage.get('cart').then(cartId => {
+      this.storage.get('token').then(token => {
+        console.log(cartId)
+        console.log(token)
+        this.cartService.placeOrder(token, cartId).subscribe(result => {
+          console.log(JSON.stringify(result))
+        })
+      })
+    })
   }
 
 }

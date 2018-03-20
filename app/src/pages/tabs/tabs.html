@@ -12,8 +12,8 @@
 
   <super-tabs id="mainTabs" selectedTabIndex="0" toolbarColor="dark" toolbarBackground="white" [config]="{ sideMenu: 'left' }"
     (tabSelect)="onTabSelect($event)">
-    <super-tab [root]="tab1Root" icon="home"></super-tab>
-    <super-tab [root]="tab2Root" icon="cart"></super-tab>
-    <super-tab [root]="tab3Root" icon="contacts"></super-tab>
+    <super-tab [root]="tab1Root" icon="home" title="Home"></super-tab>
+    <super-tab [root]="tab2Root" icon="cart" title="Cart"></super-tab>
+    <super-tab [root]="tab3Root" icon="contacts" title="Profile"></super-tab>
   </super-tabs>
 </ion-content>

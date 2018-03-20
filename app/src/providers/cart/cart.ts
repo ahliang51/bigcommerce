@@ -67,4 +67,14 @@ export class CartProvider {
     }, { headers: headers })
       .map(res => res.json());
   }
+
+  placeOrder(token, cartId) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(vars.apiUrl + '/cart/place-order', {
+      jwt: token,
+      cartId: cartId
+    }, { headers: headers })
+      .map(res => res.json());
+  }
 }

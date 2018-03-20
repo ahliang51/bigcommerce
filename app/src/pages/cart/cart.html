@@ -68,7 +68,7 @@
     </ion-row>
     <ion-row>
       <ion-col col-6>
-        Balance
+        Store Credit Balance
       </ion-col>
       <ion-col col-6 class="totalAmount">
         S$ {{creditBalance | number : '1.2'}}
@@ -78,7 +78,10 @@
 
   <!-- Only show when there is product in the cart  -->
   <div text-center *ngIf="cartArray?.length > 0">
-    <button ion-button block margin-top (click)="checkOut()">PLACE ORDER</button>
+    <p *ngIf="orderButton" class="validateOrderButton">
+      You have insufficient balance
+    </p>
+    <button ion-button block margin-top [disabled]="orderButton" (click)="checkOut()">PLACE ORDER</button>
   </div>
 
 </ion-content>

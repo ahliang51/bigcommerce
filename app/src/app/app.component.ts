@@ -1,7 +1,7 @@
 import { VerifyNumberPage } from './../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -24,7 +24,11 @@ export class MyApp {
     network: Network,
     sim: Sim,
     fb: Facebook,
+    alertCtrl: AlertController
   ) {
+
+
+
     platform.ready().then(() => {
       // this.rootPage = VerifyNumberPage
       // Okay, so the platform is ready and our plugins are available.
@@ -42,6 +46,28 @@ export class MyApp {
         }
       })
 
+      //Handling of back button
+      platform.registerBackButtonAction(() => {
+        let alert = alertCtrl.create({
+          title: 'Exit App',
+          message: 'Are you sure you want to exit?',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+              }
+            },
+            {
+              text: 'Exit',
+              handler: () => {
+                platform.exitApp();
+              }
+            }
+          ]
+        });
+        alert.present();
+      })
 
 
       // // watch network for a disconnect
