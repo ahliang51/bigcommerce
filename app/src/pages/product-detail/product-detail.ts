@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, LoadingController, ToastController
 import { ProductProvider } from '../../providers/product/product';
 import { CurrencyPipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
+import { WheelSelector } from '@ionic-native/wheel-selector';
 
 
 
@@ -24,6 +25,7 @@ export class ProductDetailPage {
   productId;
   productDetails;
   containResult = false;
+  quantity = "1";
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -31,12 +33,14 @@ export class ProductDetailPage {
     private loadingCtrl: LoadingController,
     private storage: Storage,
     private toastCtrl: ToastController,
-    private cartService: CartProvider) {
+    private cartService: CartProvider,
+    private selector: WheelSelector) {
     this.productId = navParams.get("productId")
     console.log(this.productId)
   }
 
   ionViewDidLoad() {
+    this.quantity = "1";
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
       duration: 10000
@@ -56,6 +60,46 @@ export class ProductDetailPage {
       })
     })
   }
+
+  onSelectQuantity() {
+    let data = {
+      numbers: [
+        { description: "1" },
+        { description: "2" },
+        { description: "3" },
+        { description: "4" },
+        { description: "5" },
+        { description: "6" },
+        { description: "7" },
+        { description: "8" },
+        { description: "9" },
+        { description: "10" }
+      ]
+    };
+    let config = {
+      title: "Select a quantity",
+      items: [
+        data.numbers
+      ],
+      theme: "dark",
+      positiveButtonText: "Confirm",
+      negativeButtonText: "Cancel"
+    };
+
+    this.selector.show({
+      title: "Choose Quantity",
+      items: [
+        data.numbers
+      ],
+    }).then(
+      result => {
+        this.quantity = result[0].description;
+        console.log(result[0].description + ' at index: ' + result[0].index);
+      },
+      err => console.log('Error: ', err)
+    );
+  }
+
 
   onAddToCart() {
     let loading = this.loadingCtrl.create({
@@ -77,7 +121,7 @@ export class ProductDetailPage {
         this.storage.get('cart').then(cart => {
           // Add item to cart
           let item = [{
-            "quantity": 1,
+            "quantity": this.quantity,
             "product_id": this.productId
           }
           ]
@@ -94,7 +138,7 @@ export class ProductDetailPage {
       else {
         this.storage.get('token').then(token => {
           let cart = [{
-            "quantity": 1,
+            "quantity": this.quantity,
             "product_id": this.productId
           }
           ]

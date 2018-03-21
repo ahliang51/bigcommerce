@@ -1,3 +1,4 @@
+import { TopUpPage } from './../top-up/top-up';
 import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
@@ -60,6 +61,9 @@ export class ProfilePage {
     })
   }
 
+  onTopUp() {
+    this.rootNavCtrl.push(TopUpPage);
+  }
 
   onSignOut() {
     this.fb.logout().then(result => {

@@ -19,7 +19,7 @@ export class HomePage {
     public loadingCtrl: LoadingController) {
     this.rootNavCtrl = navParams.get('rootNavCtrl');
   }
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
       duration: 10000
