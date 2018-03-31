@@ -6,11 +6,17 @@ let express = require('express'),
     async = require('async'),
     http = require('http'),
     config = require('../config/config'),
+    Chance = require('chance'),
     db, jwt, bigCommerce, bigCommerceV3;
 
 
 //Writing for sign up 
 router.post('/sign-up', (req, res, next) => {
+
+    let chance = new Chance();
+
+
+
     //Retrieve Database Connection
     db = req.db;
 
@@ -41,7 +47,9 @@ router.post('/sign-up', (req, res, next) => {
         bigCommerce.post('/customers', {
             first_name: req.body.name,
             last_name: " ",
-            email: req.body.email,
+            email: req.body.email ? req.body.email : chance.email({
+                domain: 'sample.com'
+            }),
             phone: req.body.phoneNumber
         }).then(data => {
             callback(null, data)
@@ -79,9 +87,12 @@ router.post('/sign-up', (req, res, next) => {
 });
 
 router.post('/check-user-exist', (req, res, next) => {
+
+    let email = req.body.email ? req.body.email : "sample@sample.com"
+
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
-    bigCommerce.get('/customers?email=' + req.body.email)
+    bigCommerce.get('/customers?email=' + email)
         .then(data => {
             if (data) {
                 // There is such email

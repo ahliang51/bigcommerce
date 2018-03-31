@@ -92,12 +92,13 @@ export class VerifyNumberPage {
     this.storage.get('user').then(result => {
       console.log(JSON.stringify(result))
       result.phoneNumber = this.phoneNumber
-      this.email = result.email;
+      this.email = result.email ? result.email : "";
       this.name = result.username;
       this.storage.set('user', result);
 
       //Check whether does user exist in our database
       this.loginService.checkUserExist(this.email).subscribe(data => {
+        console.log(JSON.stringify(data))
         // console.log(JSON.stringify(data))
         if (data.userExist) {
           console.log("1")

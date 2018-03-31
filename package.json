@@ -12,6 +12,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "body-parser": "^1.17.2",
+    "chance-cli": "^1.0.7",
     "cors": "^2.8.4",
     "express": "^4.15.3",
     "ionic": "^3.19.1",
