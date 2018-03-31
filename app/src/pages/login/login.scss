@@ -1,6 +1,16 @@
 page-login {}
 
+.background {
+  background-image: url('../assets/imgs/login-background.png');
+  /* Full height */
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .facebookButton {
   margin-top: 70%;
-  margin: 0 autp
+  margin: 0 auto;
 }
