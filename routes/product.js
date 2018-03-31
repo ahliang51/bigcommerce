@@ -39,4 +39,11 @@ router.post('/product-detail', (req, res, next) => {
         .then(data => res.json(data));
 });
 
+
+router.post('/banner', (req, res, next) => {
+    bigCommerce = req.bigCommerce;
+    bigCommerce.get('/banners')
+        .then(data => res.json(data));
+});
+
 module.exports = router;

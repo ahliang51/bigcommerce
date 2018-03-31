@@ -36,4 +36,11 @@ export class ProductProvider {
     return this.http.post(vars.apiUrl + '/product/product-detail', { productId: productId }, { headers: headers })
       .map(res => res.json());
   }
+
+  retrieveBanners() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(vars.apiUrl + '/product/banner', { headers: headers })
+      .map(res => res.json());
+  }
 }
