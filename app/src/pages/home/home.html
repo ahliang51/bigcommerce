@@ -5,7 +5,7 @@
 </ion-header> -->
 
 <ion-content>
-  <ion-slides *ngIf="banners && banners.length" pager="true" autoplay="3000">
+  <ion-slides *ngIf="banners && banners.length" pager="true" autoplay="3000" loop="true" effect="flip" speed="3000">
     <ion-slide *ngFor="let banner of banners">
       <img src={{banner.src}} height="100px">
     </ion-slide>

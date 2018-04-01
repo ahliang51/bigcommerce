@@ -22,6 +22,7 @@ export class HomePage {
     this.rootNavCtrl = navParams.get('rootNavCtrl');
   }
   ionViewWillEnter() {
+    this.banners = [];
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
       duration: 10000
