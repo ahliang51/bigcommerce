@@ -26,6 +26,7 @@ export class ProductDetailPage {
   productDetails;
   containResult = false;
   quantity = "1";
+  variant = "Select";
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -50,7 +51,7 @@ export class ProductDetailPage {
     // console.log(this.productId)
 
     this.productService.retrieveProductDetails(this.productId).subscribe(result => {
-      // console.log(data)
+      console.log(JSON.stringify(result));
       this.productDetails = result.data;
       loading.dismiss();
       this.containResult = true;
@@ -58,7 +59,45 @@ export class ProductDetailPage {
       this.productDetails.images.sort((a, b) => {
         return b.is_thumbnail - a.is_thumbnail
       })
-    })
+
+    });
+  }
+
+  onSelectVariant() {
+    let option = [];
+    for (let variant of this.productDetails.variants) {
+      let optionName = "";
+
+      for (let subVariant of variant.option_values) {
+        optionName += subVariant.option_display_name + " " + subVariant.label + " ";
+      }
+      option.push({
+        description: optionName
+      })
+    }
+    let config = {
+      title: "Select variant",
+      items: [
+        option
+      ],
+      theme: "dark",
+      positiveButtonText: "Confirm",
+      negativeButtonText: "Cancel"
+    };
+
+    this.selector.show({
+      title: "Choose Quantity",
+      items: [
+        option
+      ],
+    }).then(
+      result => {
+        this.variant = result[0].description;
+        console.log(result[0].description + ' at index: ' + result[0].index);
+      },
+      err => console.log('Error: ', err)
+    );
+    console.log(JSON.stringify(option));
   }
 
   onSelectQuantity() {

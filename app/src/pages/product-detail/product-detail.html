@@ -40,6 +40,15 @@
         </ion-item>
       </ion-row>
 
+      <ion-row>
+        <ion-item>
+          Variant
+          <button ion-button item-end (click)="onSelectVariant()" style="width:50%">
+            {{variant}}
+          </button>
+        </ion-item>
+      </ion-row>
+
 
       <!-- <ion-row padding-top>
         {{productDetails.price | currency}}

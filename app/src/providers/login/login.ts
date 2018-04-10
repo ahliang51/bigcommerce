@@ -29,10 +29,13 @@ export class LoginProvider {
       .map(res => res.json());
   }
 
-  checkUserExist(email) {
+  checkUserExist(email, phoneNumber) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(vars.apiUrl + '/auth/check-user-exist', { email: email }, { headers: headers })
+    return this.http.post(vars.apiUrl + '/auth/check-user-exist', {
+      email: email,
+      phoneNumber: phoneNumber
+    }, { headers: headers })
       .map(res => res.json());
   }
 

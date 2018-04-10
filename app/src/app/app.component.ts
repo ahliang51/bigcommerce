@@ -36,6 +36,8 @@ export class MyApp {
       // statusBar.styleDefault();
       splashScreen.hide();
 
+      // this.rootPage = VerifyNumberPage;
+
       fb.getLoginStatus().then(result => {
         console.log(JSON.stringify(result))
         if (result.status == "connected") {

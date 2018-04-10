@@ -88,26 +88,79 @@ router.post('/sign-up', (req, res, next) => {
 
 router.post('/check-user-exist', (req, res, next) => {
 
-    let email = req.body.email ? req.body.email : "sample@sample.com"
-
     //Retrieve bigCommerce Connection
     bigCommerce = req.bigCommerce;
-    bigCommerce.get('/customers?email=' + email)
-        .then(data => {
-            if (data) {
-                // There is such email
+
+    let email = req.body.email ? req.body.email : "sample@sample.com";
+    let phoneNumber = req.body.phoneNumber;
+
+    console.log(phoneNumber);
+
+    async.waterfall([
+        checkEmail,
+        checkPhoneNumber
+    ], function (err, result) {
+        if (err) {
+            res.json({
+                userExist: true
+            })
+        } else {
+            if (typeof (result) === "boolean") {
                 res.json({
-                    userId: data[0].id,
-                    userExist: true
+                    userExist: result
+                })
+            } else {
+                res.json({
+                    userExist: true,
+                    userId: result
                 })
             }
-            // There is no such email
-            else {
-                res.json({
-                    userExist: false
+
+        }
+    });
+
+    function checkEmail(callback) {
+
+        bigCommerce.get('/customers?email=' + email)
+            .then(data => {
+                if (data) {
+                    // There is such email
+                    return callback(true, data[0].id)
+                    // res.json({
+                    //     userId: data[0].id,
+                    //     userExist: true
+                    // })
+                }
+                // There is no such email
+                else {
+                    callback(null, false)
+                    // res.json({
+                    //     userExist: false
+                    // })
+                }
+            })
+    }
+
+    function checkPhoneNumber(result, callback) {
+        console.log(result)
+        if (!result) {
+            bigCommerce.get('/customers?phone=' + phoneNumber)
+                .then(data => {
+                    if (data) {
+                        // There is such number
+                        callback(null, data[0].id)
+                    }
+                    // There is no such email
+                    else {
+                        callback(null, false)
+                        // res.json({
+                        //     userExist: false
+                        // })
+                    }
                 })
-            }
-        })
+        }
+    }
+
 });
 
 router.post('/update-user-mobile', (req, res, next) => {

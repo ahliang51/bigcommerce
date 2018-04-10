@@ -63,7 +63,7 @@ export class HomePage {
         // console.log(JSON.stringify(temp))
       }
       this.categories = data;
-      console.log(JSON.stringify(this.categories))
+      // console.log(JSON.stringify(this.categories))
     })
   }
 

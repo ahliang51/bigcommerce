@@ -97,7 +97,7 @@ export class VerifyNumberPage {
       this.storage.set('user', result);
 
       //Check whether does user exist in our database
-      this.loginService.checkUserExist(this.email).subscribe(data => {
+      this.loginService.checkUserExist(this.email, this.phoneNumber).subscribe(data => {
         console.log(JSON.stringify(data))
         // console.log(JSON.stringify(data))
         if (data.userExist) {
