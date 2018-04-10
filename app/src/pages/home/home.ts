@@ -37,20 +37,33 @@ export class HomePage {
         // let fileType = banner.content.search('png');
         let fileType = banner.content.indexOf("png", banner.content.indexOf("png") + 1);
         let imagePath = this.storePath + source.substring(index + 28, fileType + 3)
-        console.log(imagePath)
-        console.log(JSON.stringify(banner));
+        // console.log(imagePath)
+        // console.log(JSON.stringify(banner));
         this.banners.push({
           src: imagePath
         });
-        console.log(this.banners)
+        // console.log(this.banners)
       }
       // console.log(JSON.stringify(data));
     })
 
     this.productService.retrieveCategories().subscribe(data => {
       // console.log(JSON.stringify(data));
-      this.categories = data;
+
       loading.dismiss();
+
+      for (let temp of data) {
+        let source = temp.description;
+        let index = temp.description.search('src');
+        // let fileType = banner.content.search('png');
+        let fileType = temp.description.indexOf("png", temp.description.indexOf("png") + 1);
+        let imagePath = this.storePath + source.substring(index + 28, fileType + 3)
+        // console.log(JSON.stringify(temp))
+        temp.imagePath = imagePath;
+        // console.log(JSON.stringify(temp))
+      }
+      this.categories = data;
+      console.log(JSON.stringify(this.categories))
     })
   }
 

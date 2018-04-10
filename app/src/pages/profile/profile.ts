@@ -1,12 +1,14 @@
 import { TopUpPage } from './../top-up/top-up';
 import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Facebook } from '@ionic-native/facebook';
 import { MyApp } from '../../app/app.component';
 import { SuperTabsController } from 'ionic2-super-tabs';
 import { ProfileProvider } from '../../providers/profile/profile';
+
+declare var window;
 
 /**
  * Generated class for the ProfilePage page.
@@ -33,7 +35,8 @@ export class ProfilePage {
     private fb: Facebook,
     private superTabsCtrl: SuperTabsController,
     private profileService: ProfileProvider,
-    private loadingCtrl: LoadingController, ) {
+    private loadingCtrl: LoadingController,
+    private platform: Platform) {
     this.rootNavCtrl = navParams.get('rootNavCtrl');
   }
 
@@ -73,4 +76,12 @@ export class ProfilePage {
       }
     })
   }
+
+  onVivoBee() {
+    window.plugins.launcher.launch({ packageName: 'com.app.vivobee' }, success => {
+
+    }, err => {
+      window.location.href = "https://play.google.com/store/apps/details?id=com.app.vivobee";
+    });
+  };
 }

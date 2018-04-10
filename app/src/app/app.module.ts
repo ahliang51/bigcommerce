@@ -79,7 +79,7 @@ import { TopUpPage } from '../pages/top-up/top-up';
     ProfileProvider,
     CartProvider,
     InAppBrowser,
-    WheelSelector
+    WheelSelector,
   ]
 })
 export class AppModule { }

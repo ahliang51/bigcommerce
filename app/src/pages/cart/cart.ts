@@ -195,7 +195,7 @@ export class CartPage {
           // console.log(JSON.stringify(data))
           this.platform.ready().then(() => {
             let browser = this.inAppBrowser.create(data.result, '_blank', {
-              location: 'no',
+              // location: 'no',
               zoom: 'no'
             });
 
@@ -207,7 +207,7 @@ export class CartPage {
             })
 
             browser.on('loadstart').subscribe(event => {
-              if (event.url.includes("order-confirmation")) {
+              if (event.url.includes("order-confirmation") || event.url.includes("finishorder")) {
                 paymentMade = true
                 this.storage.remove('cart')
               }

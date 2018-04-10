@@ -12,9 +12,9 @@ router.get('/categories', (req, res, next) => {
     bigCommerce = req.bigCommerce;
     bigCommerce.get('/categories')
         .then(data => {
-            for (let temp of data) {
-                temp.image_file = config.storeImagePath + temp.image_file;
-            }
+            // for (let temp of data) {
+            //     temp.image_file = config.storeImagePath + temp.image_file;
+            // }
             // console.log(data)
             res.json(data)
         })

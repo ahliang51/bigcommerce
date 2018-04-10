@@ -31,6 +31,7 @@
         "@ionic/storage": "2.1.3",
         "bootstrap-social": "^5.1.1",
         "cordova-android": "7.0.0",
+        "cordova-plugin-app-launcher": "git+https://github.com/nchutchind/cordova-plugin-app-launcher.git",
         "cordova-plugin-device": "^2.0.1",
         "cordova-plugin-facebook": "^0.2.2",
         "cordova-plugin-facebook4": "^1.9.1",
@@ -46,6 +47,7 @@
         "cordova-wheel-selector-plugin": "^1.0.9",
         "font-awesome": "^4.7.0",
         "ion-multi-picker": "^2.1.2",
+        "ionic": "^3.20.0",
         "ionic-angular": "3.9.2",
         "ionic2-super-tabs": "^4.2.2",
         "ionicons": "3.0.0",
@@ -57,7 +59,7 @@
     "devDependencies": {
         "@angular/cli": "^1.7.3",
         "@ionic/app-scripts": "3.1.8",
-        "typescript": "2.4.2"
+        "typescript": "^2.8.1"
     },
     "description": "An Ionic project",
     "cordova": {
@@ -76,7 +78,8 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-sim": {},
             "cordova-plugin-inappbrowser": {},
-            "cordova-wheel-selector-plugin": {}
+            "cordova-wheel-selector-plugin": {},
+            "cordova-plugin-app-launcher": {}
         },
         "platforms": [
             "android"
