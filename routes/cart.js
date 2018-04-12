@@ -66,6 +66,12 @@ router.post('/retrieve-cart', (req, res, next) => {
         .then(data => res.json(data));
 })
 
+router.post('/test', (req, res, next) => {
+    bigCommerceV3 = req.bigCommerceV3;
+    bigCommerceV3.get('/catalog/products/116/variants/129')
+        .then(data => res.json(data));
+})
+
 router.post('/add-item', (req, res, next) => {
     bigCommerceV3 = req.bigCommerceV3;
     bigCommerceV3.post('/carts/' + req.body.cartId + '/items', {

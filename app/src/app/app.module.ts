@@ -30,24 +30,32 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { CartProvider } from '../providers/cart/cart';
 import { OrderPage } from '../pages/order/order';
 import { TopUpPage } from '../pages/top-up/top-up';
+import { CartPageModule } from '../pages/cart/cart.module';
+import { LoginPageModule } from '../pages/login/login.module';
+import { OrderPageModule } from '../pages/order/order.module';
+import { ProductCategoriesPageModule } from '../pages/product-categories/product-categories.module';
+import { ProductDetailPageModule } from '../pages/product-detail/product-detail.module';
+import { ProfilePageModule } from '../pages/profile/profile.module';
+import { TopUpPageModule } from '../pages/top-up/top-up.module';
+import { VerifyNumberPageModule } from '../pages/verify-number/verify-number.module';
 
 
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
-    CartPage,
-    ProfilePage,
     HomePage,
     TabsPage,
-    ProductCategoriesPage,
-    ProductDetailPage,
-    VerifyNumberPage,
-    OrderPage,
-    TopUpPage
   ],
   imports: [
     HttpModule,
+    CartPageModule,
+    LoginPageModule,
+    OrderPageModule,
+    ProductCategoriesPageModule,
+    ProductDetailPageModule,
+    ProfilePageModule,
+    TopUpPageModule,
+    VerifyNumberPageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),

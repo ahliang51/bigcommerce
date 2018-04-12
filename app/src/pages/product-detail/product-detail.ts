@@ -1,6 +1,6 @@
 import { CartProvider } from './../../providers/cart/cart';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
 import { CurrencyPipe } from '@angular/common';
 import { Storage } from '@ionic/storage';
@@ -27,6 +27,7 @@ export class ProductDetailPage {
   containResult = false;
   quantity = "1";
   variant = "Select";
+  variantIndex;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -35,12 +36,14 @@ export class ProductDetailPage {
     private storage: Storage,
     private toastCtrl: ToastController,
     private cartService: CartProvider,
-    private selector: WheelSelector) {
+    private selector: WheelSelector,
+    private alertCtrl: AlertController) {
     this.productId = navParams.get("productId")
     console.log(this.productId)
   }
 
   ionViewDidLoad() {
+    this.variantIndex = -1;
     this.quantity = "1";
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
@@ -93,6 +96,8 @@ export class ProductDetailPage {
     }).then(
       result => {
         this.variant = result[0].description;
+        console.log(JSON.stringify(this.productDetails.variants[result[0].index]));
+        this.variantIndex = result[0].index;
         console.log(result[0].description + ' at index: ' + result[0].index);
       },
       err => console.log('Error: ', err)
@@ -141,58 +146,104 @@ export class ProductDetailPage {
 
 
   onAddToCart() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-      duration: 10000
-    });
-    loading.present();
 
-    let toast = this.toastCtrl.create({
-      message: 'Added To Cart',
-      duration: 2000,
-      position: 'bottom'
-    });
+    if (this.variantIndex == -1) {
+      let alert = this.alertCtrl.create({
+        title: 'Select Variant',
+        subTitle: 'Please select a variant',
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
+    else if (this.productDetails.variants[this.variantIndex].inventory_level <= this.quantity) {
+      let alert = this.alertCtrl.create({
+        title: 'Inventory Low',
+        subTitle: 'Not enough stock',
+        buttons: ['Dismiss']
+      });
+      alert.present();
+    }
+    else {
+      let loading = this.loadingCtrl.create({
+        content: 'Please wait...',
+        duration: 10000
+      });
+      loading.present();
 
-    this.storage.get('cart').then(result => {
-      // console.log(JSON.stringify(result))
-      //There is a cart already
-      if (result) {
-        this.storage.get('cart').then(cart => {
-          // Add item to cart
-          let item = [{
-            "quantity": this.quantity,
-            "product_id": this.productId
-          }
-          ]
-          this.cartService.addToCart(cart, item).subscribe(data => {
-            // console.log(JSON.stringify(data));
-            loading.dismiss();
-            toast.present();
-            this.navCtrl.pop();
+      let toast = this.toastCtrl.create({
+        message: 'Added To Cart',
+        duration: 2000,
+        position: 'bottom'
+      });
 
+      this.storage.get('cart').then(result => {
+        // console.log(JSON.stringify(result))
+        //There is a cart already
+        if (result) {
+          this.storage.get('cart').then(cart => {
+
+            let item = [];
+            if (this.productDetails.variants.length > 1) {
+              item.push({
+                "quantity": this.quantity,
+                "product_id": this.productId,
+                "variant_id": this.productDetails.variants[this.variantIndex].id
+              })
+            }
+            else {
+              // Add item to cart
+              item.push(
+                {
+                  "quantity": this.quantity,
+                  "product_id": this.productId
+                }
+              )
+            }
+            console.log(JSON.stringify(item))
+
+            this.cartService.addToCart(cart, item).subscribe(data => {
+              // console.log(JSON.stringify(data));
+              loading.dismiss();
+              toast.present();
+              this.navCtrl.pop();
+
+            })
           })
-        })
-      }
-      //There are no cart
-      else {
-        this.storage.get('token').then(token => {
-          let cart = [{
-            "quantity": this.quantity,
-            "product_id": this.productId
-          }
-          ]
-          this.cartService.createCart(token, cart).subscribe(result => {
-            // console.log(JSON.stringify(result))
-            this.storage.set('cart', result.data.id)
-            loading.dismiss();
-            toast.present();
-            this.navCtrl.pop();
+        }
+        //There are no cart
+        else {
+          this.storage.get('token').then(token => {
+            let cart = [];
+            if (this.productDetails.variants.length > 1) {
+              cart.push({
+                "quantity": this.quantity,
+                "product_id": this.productId,
+                "variant_id": this.productDetails.variants[this.variantIndex].id
+              })
+            }
+            else {
+              // Add item to cart
+              cart.push(
+                {
+                  "quantity": this.quantity,
+                  "product_id": this.productId
+                }
+              )
+            }
+            this.cartService.createCart(token, cart).subscribe(result => {
+              // console.log(JSON.stringify(result))
+              this.storage.set('cart', result.data.id)
+              loading.dismiss();
+              toast.present();
+              this.navCtrl.pop();
+            })
           })
-        })
 
-      }
-    })
+        }
+      })
 
+    }
   }
+
 
 }

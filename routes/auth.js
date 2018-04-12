@@ -120,12 +120,12 @@ router.post('/check-user-exist', (req, res, next) => {
     });
 
     function checkEmail(callback) {
-
         bigCommerce.get('/customers?email=' + email)
             .then(data => {
                 if (data) {
+                    // console.log(data)
                     // There is such email
-                    return callback(true, data[0].id)
+                    callback(null, data[0].id)
                     // res.json({
                     //     userId: data[0].id,
                     //     userExist: true
@@ -139,26 +139,25 @@ router.post('/check-user-exist', (req, res, next) => {
                     // })
                 }
             })
+
     }
 
     function checkPhoneNumber(result, callback) {
-        console.log(result)
-        if (!result) {
-            bigCommerce.get('/customers?phone=' + phoneNumber)
-                .then(data => {
-                    if (data) {
-                        // There is such number
-                        callback(null, data[0].id)
-                    }
-                    // There is no such email
-                    else {
-                        callback(null, false)
-                        // res.json({
-                        //     userExist: false
-                        // })
-                    }
-                })
-        }
+        bigCommerce.get('/customers?phone=' + phoneNumber)
+            .then(data => {
+                if (data) {
+                    // There is such number
+                    callback(null, data[0].id)
+                }
+                // There is no such email
+                else {
+                    callback(null, false)
+                    // res.json({
+                    //     userExist: false
+                    // })
+                }
+            })
+
     }
 
 });
@@ -192,6 +191,7 @@ router.post('/update-user-mobile', (req, res, next) => {
     });
 
     function updateEcommerce(callback) {
+        console.log(req.body.userId)
         bigCommerce.put('/customers/' + req.body.userId, {
                 phone: req.body.phoneNumber
             })

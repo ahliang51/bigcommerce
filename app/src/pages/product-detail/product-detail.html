@@ -40,7 +40,7 @@
         </ion-item>
       </ion-row>
 
-      <ion-row>
+      <ion-row *ngIf="productDetails.variants.length > 1">
         <ion-item>
           Variant
           <button ion-button item-end (click)="onSelectVariant()" style="width:50%">

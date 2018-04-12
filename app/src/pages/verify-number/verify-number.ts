@@ -102,6 +102,7 @@ export class VerifyNumberPage {
         // console.log(JSON.stringify(data))
         if (data.userExist) {
           console.log("1")
+          console.log(JSON.stringify(data))
           this.loginService.updateUserMobile(data.userId, this.phoneNumber).subscribe(result => {
             console.log(JSON.stringify(result))
             if (result.success) {
