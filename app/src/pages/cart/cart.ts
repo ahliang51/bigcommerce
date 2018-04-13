@@ -190,12 +190,13 @@ export class CartPage {
   checkOut() {
     let paymentMade = false;
     this.storage.get('cart').then(cartId => {
+      console.log(cartId)
       this.storage.get('token').then(token => {
         this.cartService.placeOrder(token, cartId).subscribe(data => {
           // console.log(JSON.stringify(data))
           this.platform.ready().then(() => {
             let browser = this.inAppBrowser.create(data.result, '_blank', {
-              // location: 'no',
+              location: 'no',
               zoom: 'no'
             });
 

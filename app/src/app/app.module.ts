@@ -38,6 +38,7 @@ import { ProductDetailPageModule } from '../pages/product-detail/product-detail.
 import { ProfilePageModule } from '../pages/profile/profile.module';
 import { TopUpPageModule } from '../pages/top-up/top-up.module';
 import { VerifyNumberPageModule } from '../pages/verify-number/verify-number.module';
+import { Push } from '@ionic-native/push';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import { VerifyNumberPageModule } from '../pages/verify-number/verify-number.mod
     CartProvider,
     InAppBrowser,
     WheelSelector,
+    Push
   ]
 })
 export class AppModule { }

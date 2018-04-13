@@ -28,6 +28,7 @@ export class ProductDetailPage {
   quantity = "1";
   variant = "Select";
   variantIndex;
+  variantValidation = false;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -43,8 +44,9 @@ export class ProductDetailPage {
   }
 
   ionViewDidLoad() {
-    this.variantIndex = -1;
+    this.variantValidation = false;
     this.quantity = "1";
+    this.variantIndex = 0;
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
       duration: 10000
@@ -67,7 +69,9 @@ export class ProductDetailPage {
   }
 
   onSelectVariant() {
-    let option = [];
+    let option = [{ description: "Select" }];
+    this.variant = option[0].description;
+
     for (let variant of this.productDetails.variants) {
       let optionName = "";
 
@@ -147,13 +151,20 @@ export class ProductDetailPage {
 
   onAddToCart() {
 
-    if (this.variantIndex == -1) {
-      let alert = this.alertCtrl.create({
-        title: 'Select Variant',
-        subTitle: 'Please select a variant',
-        buttons: ['Dismiss']
-      });
-      alert.present();
+    if (this.productDetails.variants.length > 1) {
+
+      if (this.variantIndex == 0) {
+        let alert = this.alertCtrl.create({
+          title: 'Select Variant',
+          subTitle: 'Please select a variant',
+          buttons: ['Dismiss']
+        });
+        alert.present();
+      }
+
+      else {
+        this.variantValidation = true;
+      }
     }
     else if (this.productDetails.variants[this.variantIndex].inventory_level <= this.quantity) {
       let alert = this.alertCtrl.create({
@@ -164,6 +175,12 @@ export class ProductDetailPage {
       alert.present();
     }
     else {
+      this.variantValidation = true;
+      this.variantIndex = 0;
+    }
+
+
+    if (this.variantValidation) {
       let loading = this.loadingCtrl.create({
         content: 'Please wait...',
         duration: 10000
@@ -178,6 +195,7 @@ export class ProductDetailPage {
 
       this.storage.get('cart').then(result => {
         // console.log(JSON.stringify(result))
+        console.log(result)
         //There is a cart already
         if (result) {
           this.storage.get('cart').then(cart => {
@@ -214,6 +232,7 @@ export class ProductDetailPage {
         else {
           this.storage.get('token').then(token => {
             let cart = [];
+            console.log(JSON.stringify(cart))
             if (this.productDetails.variants.length > 1) {
               cart.push({
                 "quantity": this.quantity,
@@ -241,8 +260,8 @@ export class ProductDetailPage {
 
         }
       })
-
     }
+
   }
 
 

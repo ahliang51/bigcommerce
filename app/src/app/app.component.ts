@@ -11,6 +11,8 @@ import { LoginPage } from '../pages/login/login';
 import { Network } from '@ionic-native/network';
 import { Facebook } from '@ionic-native/facebook';
 
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -24,9 +26,9 @@ export class MyApp {
     network: Network,
     sim: Sim,
     fb: Facebook,
-    alertCtrl: AlertController
+    alertCtrl: AlertController,
+    push: Push
   ) {
-
 
 
     platform.ready().then(() => {
@@ -71,6 +73,30 @@ export class MyApp {
         alert.present();
       })
 
+      let options: PushOptions = {
+        android: {
+          senderID: '1020958347417'
+        },
+        ios: {
+          alert: 'true',
+          badge: true,
+          sound: 'false'
+        },
+        windows: {}
+      };
+
+      let pushObject: PushObject = push.init(options);
+
+      pushObject.on('notification').subscribe((notification: any) => {
+        if (notification.additionalData.foreground) {
+          let alert = alertCtrl.create({
+            title: 'New Push notification',
+            message: notification.message
+          });
+          alert.present();
+        }
+      });
+
 
       // // watch network for a disconnect
       // let disconnectSubscription = network.onDisconnect().subscribe(() => {
@@ -93,20 +119,8 @@ export class MyApp {
       //   }, 3000);
       // });
 
-      // sim.hasReadPermission().then(
-      //   (info) => console.log('Has permission:', info)
-      // );
-
-      // sim.getSimInfo().then(result => {
-      //   console.log(JSON.stringify(result))
-      //   // storage.set('phoneNumber', result.cards[0].phoneNumber)
-      //   // platform.exitApp()
-      // })
-
-      // sim.hasReadPermission().then(
-      //   (info) => console.log('Has permission:', info)
-
-      // );
     });
+
   }
+
 }

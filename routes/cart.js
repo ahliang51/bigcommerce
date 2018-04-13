@@ -18,13 +18,11 @@ router.post('/create-cart', (req, res, next) => {
     ], function (err, result) {
         if (err) {
             res.json({
+                error: err,
                 success: false
             })
         } else {
-            res.json({
-                success: true,
-                token: result
-            })
+            res.json(result)
         }
     });
 
@@ -39,11 +37,14 @@ router.post('/create-cart', (req, res, next) => {
     }
 
     function createCart(result, callback) {
+        console.log(req.body.cart)
+        console.log(result)
         bigCommerceV3.post('/carts', {
                 customer_id: result.customerEcommerceId,
                 line_items: req.body.cart
             })
-            .then(data => res.json(data));
+            .then(data =>
+                callback(null, data));
     }
 })
 
@@ -60,16 +61,88 @@ router.post('/update-cart', (req, res, next) => {
         .then(data => res.json(data));
 })
 
+// router.post('/retrieve-cart', (req, res, next) => {
+//     bigCommerceV3 = req.bigCommerceV3;
+//     bigCommerceV3.get('/carts/' + req.body.cartId)
+//         .then(data => res.json(data));
+// })
+
+
 router.post('/retrieve-cart', (req, res, next) => {
     bigCommerceV3 = req.bigCommerceV3;
-    bigCommerceV3.get('/carts/' + req.body.cartId)
-        .then(data => res.json(data));
-})
 
-router.post('/test', (req, res, next) => {
-    bigCommerceV3 = req.bigCommerceV3;
-    bigCommerceV3.get('/catalog/products/116/variants/129')
-        .then(data => res.json(data));
+    async.waterfall([
+        retrieveCart,
+        insertVariant
+    ], function (err, result) {
+        if (err) {
+            res.json({
+                error: err,
+                success: false
+            })
+        } else {
+            console.log(result)
+            res.json(result)
+        }
+    });
+
+    function retrieveCart(callback) {
+        bigCommerceV3.get('/carts/' + req.body.cartId)
+            .then(data =>
+                callback(null, data));
+    }
+
+    function insertVariant(result, callback) {
+
+        function lineItemsCompare(a, b) {
+            if (a.variant_id < b.variant_id)
+                return -1;
+            if (a.variant_id > b.variant_id)
+                return 1;
+            return 0;
+        }
+
+        function variantItemsCompare(a, b) {
+            if (a.id < b.id)
+                return -1;
+            if (a.id > b.id)
+                return 1;
+            return 0;
+        }
+
+        let lineItems = result.data.line_items.physical_items;
+        let variantItems = [];
+        lineItems.sort(lineItemsCompare);
+        // console.log(lineItems)
+
+        async.each(lineItems,
+            function retrieveVariant(item, callback) {
+                bigCommerceV3.get('/catalog/products/' + item.product_id + '/variants/' + item.variant_id)
+                    .then(data => {
+                        variantItems.push(data.data);
+                        // console.log(variantItems)
+                        variantItems.sort(variantItemsCompare);
+                        callback()
+                    });
+            }, err => {
+                let variantMap = [];
+                for (let variant in variantItems) {
+                    let optionName = "";
+                    for (let optionValue of variantItems[variant].option_values) {
+                        optionName += optionValue.option_display_name + " " + optionValue.label + " "
+                    }
+                    variantMap.push(optionName);
+                }
+                // console.log(variantMap)
+                // console.log(lineItems)
+                lineItems.map((item, index) => {
+                    item.variantText = variantMap[index];
+                })
+                result.data.line_items.physical_items = lineItems
+                // console.log(lineItems)
+                callback(null, result)
+            })
+    }
 })
 
 router.post('/add-item', (req, res, next) => {
