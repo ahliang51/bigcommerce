@@ -17,24 +17,26 @@ export class LoginProvider {
     console.log('Hello LoginProvider Provider');
   }
 
-  signUp(name, email, phoneNumber) {
+  signUp(name, email, phoneNumber, facebookId) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(vars.apiUrl + '/auth/sign-up',
       {
         phoneNumber: phoneNumber,
         name: name,
-        email: email
+        email: email,
+        facebookId: facebookId
       }, { headers: headers })
       .map(res => res.json());
   }
 
-  checkUserExist(email, phoneNumber) {
+  checkUserExist(email, phoneNumber, facebookId) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(vars.apiUrl + '/auth/check-user-exist', {
       email: email,
-      phoneNumber: phoneNumber
+      phoneNumber: phoneNumber,
+      facebookId: facebookId
     }, { headers: headers })
       .map(res => res.json());
   }

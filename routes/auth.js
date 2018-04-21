@@ -71,6 +71,7 @@ router.post('/sign-up', (req, res, next) => {
         db.collection('users').insert({
             customerEcommerceId: result.id,
             phoneNumber: req.body.phoneNumber,
+            facebookId: req.body.facebookId
         }).then(data => {
             callback(null, result.id)
         })
@@ -94,79 +95,101 @@ router.post('/sign-up', (req, res, next) => {
 
 });
 
+
+
+// 1) Query MongoDB for such facebookID
 router.post('/check-user-exist', (req, res, next) => {
 
-    //Retrieve bigCommerce Connection
-    bigCommerce = req.bigCommerce;
+    //Retrieve Database Connection
+    db = req.db;
 
-    let email = req.body.email ? req.body.email : "sample@sample.com";
-    let phoneNumber = req.body.phoneNumber;
-
-    console.log(phoneNumber);
-
-    async.waterfall([
-        checkEmail,
-        checkPhoneNumber
-    ], function (err, result) {
-        if (err) {
+    db.collection('users').findOne({
+        facebookId: req.body.facebookId
+    }).then(result => {
+        if (result) {
             res.json({
-                userExist: true
+                userExist: true,
+                userId: result.customerEcommerceId
             })
         } else {
-            if (typeof (result) === "boolean") {
-                res.json({
-                    userExist: result
-                })
-            } else {
-                res.json({
-                    userExist: true,
-                    userId: result
-                })
-            }
-
+            res.json({
+                userExist: false
+            })
         }
-    });
+    })
 
-    function checkEmail(callback) {
-        bigCommerce.get('/customers?email=' + email)
-            .then(data => {
-                if (data) {
-                    console.log(data)
-                    // There is such email
-                    callback(null, data[0].id)
-                    // res.json({
-                    //     userId: data[0].id,
-                    //     userExist: true
-                    // })
-                }
-                // There is no such email
-                else {
-                    callback(null, false)
-                    // res.json({
-                    //     userExist: false
-                    // })
-                }
-            })
 
-    }
+    // //Retrieve bigCommerce Connection
+    // bigCommerce = req.bigCommerce;
 
-    function checkPhoneNumber(result, callback) {
-        bigCommerce.get('/customers?phone=' + phoneNumber)
-            .then(data => {
-                if (data) {
-                    // There is such number
-                    callback(null, data[0].id)
-                }
-                // There is no such email
-                else {
-                    callback(null, false)
-                    // res.json({
-                    //     userExist: false
-                    // })
-                }
-            })
+    // let email = req.body.email ? req.body.email : "sample@sample.com";
+    // let phoneNumber = req.body.phoneNumber;
 
-    }
+    // console.log(phoneNumber);
+
+    // async.waterfall([
+    //     checkEmail,
+    //     checkPhoneNumber
+    // ], function (err, result) {
+    //     if (err) {
+    //         res.json({
+    //             userExist: true
+    //         })
+    //     } else {
+    //         if (typeof (result) === "boolean") {
+    //             res.json({
+    //                 userExist: result
+    //             })
+    //         } else {
+    //             res.json({
+    //                 userExist: true,
+    //                 userId: result
+    //             })
+    //         }
+
+    //     }
+    // });
+
+    // function checkEmail(callback) {
+    //     bigCommerce.get('/customers?email=' + email)
+    //         .then(data => {
+    //             if (data) {
+    //                 console.log(data)
+    //                 // There is such email
+    //                 callback(null, data[0].id)
+    //                 // res.json({
+    //                 //     userId: data[0].id,
+    //                 //     userExist: true
+    //                 // })
+    //             }
+    //             // There is no such email
+    //             else {
+    //                 callback(null, false)
+    //                 // res.json({
+    //                 //     userExist: false
+    //                 // })
+    //             }
+    //         })
+
+    // }
+
+    // function checkPhoneNumber(result, callback) {
+    //     bigCommerce.get('/customers?phone=' + phoneNumber)
+    //         .then(data => {
+    //             if (data) {
+    //                 // There is such number
+    //                 callback(null, data[0].id)
+    //             }
+    //             // There is no such email
+    //             else {
+    //                 callback(null, false)
+    //                 // res.json({
+    //                 //     userExist: false
+    //                 // })
+    //             }
+    //         })
+
+    // }
 
 });
 
@@ -182,13 +205,17 @@ router.post('/update-user-mobile', (req, res, next) => {
     bigCommerce = req.bigCommerce;
 
     async.waterfall([
+        checkPhoneNumberExist,
         updateEcommerce,
         updateMongo,
         generateToken
     ], function (err, result) {
+        console.log(err)
+        console.log(result)
         if (err) {
             res.json({
-                success: false
+                success: false,
+                message: "Phone number has been registered"
             })
         } else {
             res.json({
@@ -198,7 +225,28 @@ router.post('/update-user-mobile', (req, res, next) => {
         }
     });
 
-    function updateEcommerce(callback) {
+    function checkPhoneNumberExist(callback) {
+        db.collection('users').findOne({
+            phoneNumber: req.body.phoneNumber
+        }).then(result => {
+            console.log(result)
+            //Number Exist
+            if (result) {
+
+                if (result.customerEcommerceId == req.body.userId && req.body.phoneNumber == result.phoneNumber) {
+                    callback(null, result)
+                } else {
+                    callback("Phone number has been registered")
+                }
+            }
+            // Number does not exist
+            else {
+                callback(null, result)
+            }
+        })
+    }
+
+    function updateEcommerce(result, callback) {
         console.log(req.body.userId)
         bigCommerce.put('/customers/' + req.body.userId, {
                 phone: req.body.phoneNumber

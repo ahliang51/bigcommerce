@@ -79,6 +79,7 @@ export class LoginPage {
             console.log(user.picture)
             console.log(user.email)
             this.storage.set('user', {
+              facebookId: userId,
               username: user.name,
               profilePicture: user.picture,
               email: user.email

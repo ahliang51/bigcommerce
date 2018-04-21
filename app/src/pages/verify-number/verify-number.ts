@@ -24,6 +24,7 @@ export class VerifyNumberPage {
   name;
   validateNumber: boolean = false;
   validateMessage = "";
+  facebookId;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -94,10 +95,11 @@ export class VerifyNumberPage {
       result.phoneNumber = this.phoneNumber
       this.email = result.email ? result.email : "";
       this.name = result.username;
+      this.facebookId = result.facebookId;
       this.storage.set('user', result);
 
       //Check whether does user exist in our database
-      this.loginService.checkUserExist(this.email, this.phoneNumber).subscribe(data => {
+      this.loginService.checkUserExist(this.email, this.phoneNumber, this.facebookId).subscribe(data => {
         console.log(JSON.stringify(data))
         // console.log(JSON.stringify(data))
         if (data.userExist) {
@@ -113,11 +115,20 @@ export class VerifyNumberPage {
                 this.navCtrl.setRoot(TabsPage)
               })
             }
+            else {
+              let toast = this.toastCtrl.create({
+                message: result.message,
+                duration: 3000,
+                position: 'bottom'
+              });
+              toast.present();
+              loading.dismiss();
+            }
           })
         }
         else {
           console.log("2")
-          this.loginService.signUp(this.name, this.email, this.phoneNumber).subscribe(result => {
+          this.loginService.signUp(this.name, this.email, this.phoneNumber, this.facebookId).subscribe(result => {
             console.log(JSON.stringify(result))
 
             if (result.success) {
