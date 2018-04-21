@@ -28,6 +28,7 @@ export class ProfilePage {
   profilePicture = "";
   rootNavCtrl: NavController;
   storeCredit;
+  accessCode;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -58,6 +59,7 @@ export class ProfilePage {
       this.profileService.retrieveProfile(result).subscribe(data => {
         console.log(JSON.stringify(data))
         this.storeCredit = data.result.store_credit;
+        this.accessCode = data.result.notes;
         loading.dismiss();
       })
 

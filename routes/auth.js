@@ -44,14 +44,22 @@ router.post('/sign-up', (req, res, next) => {
     });
 
     function createUserEcommerce(callback) {
+        let accessCode = chance.string({
+            length: 6,
+            // Alphanumeric
+            pool: 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890'
+        });
+
         bigCommerce.post('/customers', {
             first_name: req.body.name,
             last_name: " ",
+            notes: accessCode,
             email: req.body.email ? req.body.email : chance.email({
                 domain: 'sample.com'
             }),
             phone: req.body.phoneNumber
         }).then(data => {
+            console.log(data)
             callback(null, data)
         })
         // .catch(err => {
@@ -123,7 +131,7 @@ router.post('/check-user-exist', (req, res, next) => {
         bigCommerce.get('/customers?email=' + email)
             .then(data => {
                 if (data) {
-                    // console.log(data)
+                    console.log(data)
                     // There is such email
                     callback(null, data[0].id)
                     // res.json({
@@ -205,7 +213,9 @@ router.post('/update-user-mobile', (req, res, next) => {
         db.collection('users').update({
                 customerEcommerceId: req.body.userId
             }, {
-                phoneNumber: req.body.phoneNumber
+                $set: {
+                    phoneNumber: req.body.phoneNumber
+                }
             })
             .then(result => {
                 callback(null, result)
@@ -227,5 +237,11 @@ router.post('/update-user-mobile', (req, res, next) => {
     }
 })
 
+router.post('/test', (req, res, next) => {
+    let chance = new Chance();
+
+    console.log(notes)
+    res.json(notes)
+});
 
 module.exports = router;
