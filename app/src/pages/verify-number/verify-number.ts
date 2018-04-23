@@ -142,7 +142,5 @@ export class VerifyNumberPage {
         }
       })
     })
-
-
   }
 }

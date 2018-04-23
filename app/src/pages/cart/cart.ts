@@ -32,8 +32,8 @@ export class CartPage {
   orderButton = false;
   rootNavCtrl: NavController;
 
-  constructor(public navCtrl: NavController,
-    public navParams: NavParams,
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams,
     private storage: Storage,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -54,7 +54,6 @@ export class CartPage {
   }
 
   ionViewDidEnter() {
-    // console.log(this.cartArray)
     this.cartArray = [];
     this.cartSize = '';
     this.orderButton = false;

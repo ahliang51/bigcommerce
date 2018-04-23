@@ -1,7 +1,7 @@
 import { VerifyNumberPage } from './../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
 import { Component } from '@angular/core';
-import { Platform, AlertController } from 'ionic-angular';
+import { Platform, AlertController, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -27,6 +27,7 @@ export class MyApp {
     sim: Sim,
     fb: Facebook,
     alertCtrl: AlertController,
+    toastCtrl: ToastController,
     push: Push
   ) {
 
@@ -37,6 +38,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       // statusBar.styleDefault();
       splashScreen.hide();
+
 
       // this.rootPage = VerifyNumberPage;
 
@@ -98,10 +100,21 @@ export class MyApp {
       });
 
 
-      // // watch network for a disconnect
-      // let disconnectSubscription = network.onDisconnect().subscribe(() => {
-      //   console.log('network was disconnected :-(');
-      // });
+      // watch network for a disconnect
+      let disconnectSubscription = network.onDisconnect().subscribe(() => {
+        console.log('network was disconnected :-(');
+        let toast = toastCtrl.create({
+          message: 'No internet',
+          duration: 3000,
+          position: 'bottom'
+        });
+
+        toast.onDidDismiss(() => {
+          console.log('Dismissed toast');
+        });
+
+        toast.present();
+      });
 
       // // stop disconnect watch
       // disconnectSubscription.unsubscribe();
