@@ -17,6 +17,12 @@ export class ProfileProvider {
     console.log('Hello ProfileProvider Provider');
   }
 
+  getIpAddress() {
+    return this.http
+      .get('http://api.ipstack.com/check?access_key=048b660a761a090c3672566714e43094&format=1')
+      .map(res => res.json());
+  }
+
   retrieveProfile(token) {
     let headers = new Headers({
       'Access-Control-Allow-Origin': '*',
@@ -29,6 +35,15 @@ export class ProfileProvider {
     //   headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT'),
     //   headers.append('Content-Type', 'application/json');
     return this.http.post(vars.apiUrl + '/profile/retrieve-user-info', { jwt: token }, { headers: headers })
+      .map(res => res.json());
+  }
+
+  topUp(userInfo) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(vars.apiUrl + '/profile/top-up', {
+      userInfo: userInfo,
+    }, { headers: headers })
       .map(res => res.json());
   }
 }

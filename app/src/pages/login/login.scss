@@ -2,17 +2,18 @@ page-login {
   .background {
     background-image: url('../assets/imgs/login-background.png') !important;
     /* Full height */
-    height: 100% !important;
-    // /* Center and scale the image nicely */
+    height: 100% !important; // /* Center and scale the image nicely */
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
   }
 }
 
-
-
 .facebookButton {
   margin-top: 70%;
   margin: 0 auto;
+}
+
+.terms-and-conditions {
+  text-align: justify;
 }

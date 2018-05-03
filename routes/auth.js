@@ -28,6 +28,7 @@ router.post('/sign-up', (req, res, next) => {
 
     async.waterfall([
         createUserEcommerce,
+        updateShippingAddress,
         createUserMongo,
         generateToken
     ], function (err, result) {
@@ -67,13 +68,29 @@ router.post('/sign-up', (req, res, next) => {
         // })
     }
 
+    function updateShippingAddress(result, callback) {
+        bigCommerce.post(result.addresses.resource, {
+            first_name: req.body.name,
+            last_name: req.body.name,
+            phone: req.body.phoneNumber,
+            street_1: "Singapore",
+            city: "Singapore",
+            state: "Singapore",
+            zip: "Singapore",
+            country: "Singapore"
+        }).then(data => {
+            callback(null, data)
+        })
+    }
+
     function createUserMongo(result, callback) {
         db.collection('users').insert({
-            customerEcommerceId: result.id,
+            customerEcommerceId: result.customer_id,
             phoneNumber: req.body.phoneNumber,
-            facebookId: req.body.facebookId
+            facebookId: req.body.facebookId,
+            migrateTransactions: []
         }).then(data => {
-            callback(null, result.id)
+            callback(null, result.customer_id)
         })
         // .catch(err => {
         //   callback(true)
@@ -92,7 +109,6 @@ router.post('/sign-up', (req, res, next) => {
                 callback(null, token)
         })
     }
-
 });
 
 
@@ -286,10 +302,34 @@ router.post('/update-user-mobile', (req, res, next) => {
 })
 
 router.post('/test', (req, res, next) => {
-    let chance = new Chance();
 
-    console.log(notes)
-    res.json(notes)
+    bigCommerce = req.bigCommerce;
+
+    bigCommerce.post('/customers', {
+        first_name: "req.body.name",
+        last_name: " ",
+        notes: "accessCode",
+        email: "asd@asd.com",
+        phone: "req.body.phoneNumber"
+    }).then(data => {
+        // console.log(data)
+
+        bigCommerce.post(data.addresses.resource, {
+            first_name: "asd",
+            last_name: " ",
+            phone: " ",
+            street_1: " ",
+            city: " ",
+            state: " ",
+            zip: ' ',
+            country: "Singapore"
+        }).then(result => {
+            console.log(result)
+            res.json(result)
+        })
+        // res.json(data)
+
+    })
 });
 
 module.exports = router;

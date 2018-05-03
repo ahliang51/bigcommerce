@@ -20,18 +20,12 @@
         Enter Pin Number
       </ion-col>
     </ion-row>
-    <ion-row class="phoneNumber">
+    <ion-row>
       <ion-col text-center>
         <ion-item>
-          <!-- <ion-label color="primary" floating>Phone Number</ion-label> -->
-          <ion-input text-center type="text" name="phoneNumber" [(ngModel)]="phoneNumber" style="text-align:middle">
+          <ion-input text-center type="number" name="pinNumber" [(ngModel)]="pinNumber" style="text-align:middle">
           </ion-input>
         </ion-item>
-        <!-- <ion-label> -->
-        <p class="validateMessage">
-          {{validateMessage}}
-        </p>
-        <!-- </ion-label> -->
       </ion-col>
     </ion-row>
     <ion-row>

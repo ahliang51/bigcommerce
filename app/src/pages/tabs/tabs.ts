@@ -6,6 +6,8 @@ import { CartPage } from '../cart/cart';
 import { ProfilePage } from '../profile/profile';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { Storage } from '@ionic/storage';
+import { NavController, NavParams } from 'ionic-angular';
+import { LoginPage } from '../login/login';
 
 declare var window;
 
@@ -19,18 +21,26 @@ export class TabsPage {
   tab3Root = ProfilePage;
   tab4Root = HomePage;
   storeCredit;
+  rootNavCtrl: NavController;
 
   pageTitle = "Home";
 
   constructor(private superTabsCtrl: SuperTabsController,
     private storage: Storage,
+    private navParams: NavParams,
     private profileService: ProfileProvider) {
+    this.rootNavCtrl = navParams.get('rootNavCtrl');
   }
 
   ngAfterViewInit() {
     this.storage.get('token').then(result => {
       this.profileService.retrieveProfile(result).subscribe(data => {
-        this.storeCredit = data.result.store_credit;
+        if (data.success) {
+          this.storeCredit = data.result.store_credit;
+        }
+        else {
+          this.rootNavCtrl.setRoot(LoginPage)
+        }
       })
     })
     // must wait for AfterViewInit if you want to modify the tabs instantly
@@ -48,7 +58,12 @@ export class TabsPage {
   onTabSelect(ev: any) {
     this.storage.get('token').then(result => {
       this.profileService.retrieveProfile(result).subscribe(data => {
-        this.storeCredit = data.result.store_credit;
+        if (data.success) {
+          this.storeCredit = data.result.store_credit;
+        }
+        else {
+          this.rootNavCtrl.setRoot(LoginPage)
+        }
       })
 
     })

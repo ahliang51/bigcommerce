@@ -152,8 +152,17 @@ router.post('/add-item', (req, res, next) => {
         })
         .then(data => {
             console.log(data.data.line_items)
-            res.json(data);
+            res.json({
+                success: true,
+                data: data
+            });
 
+        })
+        .catch(err => {
+            res.json({
+                success: false
+            })
+            console.log(err)
         })
 })
 

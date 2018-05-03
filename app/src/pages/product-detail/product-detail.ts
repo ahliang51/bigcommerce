@@ -29,6 +29,7 @@ export class ProductDetailPage {
   variant = "Select";
   variantIndex;
   variantValidation = false;
+  selectedVariant = false;
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
@@ -45,6 +46,7 @@ export class ProductDetailPage {
 
   ionViewDidLoad() {
     this.variantValidation = false;
+    this.selectedVariant = false;
     this.quantity = "1";
     this.variantIndex = 0;
     let loading = this.loadingCtrl.create({
@@ -56,7 +58,7 @@ export class ProductDetailPage {
     // console.log(this.productId)
 
     this.productService.retrieveProductDetails(this.productId).subscribe(result => {
-      console.log(JSON.stringify(result));
+      // console.log(JSON.stringify(result));
       this.productDetails = result.data;
       loading.dismiss();
       this.containResult = true;
@@ -69,8 +71,8 @@ export class ProductDetailPage {
   }
 
   onSelectVariant() {
-    let option = [{ description: "Select" }];
-    this.variant = option[0].description;
+    let option = [];
+    this.selectedVariant = true;
 
     for (let variant of this.productDetails.variants) {
       let optionName = "";
@@ -100,13 +102,13 @@ export class ProductDetailPage {
     }).then(
       result => {
         this.variant = result[0].description;
-        console.log(JSON.stringify(this.productDetails.variants[result[0].index]));
-        this.variantIndex = result[0].index;
+        console.log(JSON.stringify(result))
+        // console.log(JSON.stringify(this.productDetails.variants[result[0].index - 1]));
+        this.variantIndex = result[0].index
         console.log(result[0].description + ' at index: ' + result[0].index);
       },
       err => console.log('Error: ', err)
     );
-    console.log(JSON.stringify(option));
   }
 
   onSelectQuantity() {
@@ -142,7 +144,7 @@ export class ProductDetailPage {
     }).then(
       result => {
         this.quantity = result[0].description;
-        console.log(result[0].description + ' at index: ' + result[0].index);
+        // console.log(result[0].description + ' at index: ' + result[0].index);
       },
       err => console.log('Error: ', err)
     );
@@ -150,35 +152,30 @@ export class ProductDetailPage {
 
 
   onAddToCart() {
-
+    this.variantValidation = true;
     if (this.productDetails.variants.length > 1) {
 
-      if (this.variantIndex == 0) {
+      if (!this.selectedVariant) {
         let alert = this.alertCtrl.create({
           title: 'Select Variant',
           subTitle: 'Please select a variant',
           buttons: ['Dismiss']
         });
+        this.variantValidation = false;
         alert.present();
       }
 
-      else {
-        this.variantValidation = true;
-      }
     }
-    else if (this.productDetails.variants[this.variantIndex].inventory_level <= this.quantity) {
+    if (this.productDetails.variants[this.variantIndex].inventory_level <= this.quantity) {
       let alert = this.alertCtrl.create({
         title: 'Inventory Low',
         subTitle: 'Not enough stock',
         buttons: ['Dismiss']
       });
+      console.log(this.productDetails.variants[this.variantIndex].inventory_level + "asd " + this.quantity)
+      this.variantValidation = false;
       alert.present();
     }
-    else {
-      this.variantValidation = true;
-      this.variantIndex = 0;
-    }
-
 
     if (this.variantValidation) {
       let loading = this.loadingCtrl.create({
@@ -221,9 +218,19 @@ export class ProductDetailPage {
 
             this.cartService.addToCart(cart, item).subscribe(data => {
               // console.log(JSON.stringify(data));
+              if (data.success) {
+                toast.present();
+                this.navCtrl.pop();
+              }
+              else {
+                let alert = this.alertCtrl.create({
+                  title: 'Inventory Low',
+                  subTitle: 'Not enough stock',
+                  buttons: ['Dismiss']
+                });
+                alert.present();
+              }
               loading.dismiss();
-              toast.present();
-              this.navCtrl.pop();
 
             })
           })

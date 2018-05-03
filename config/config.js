@@ -15,5 +15,12 @@ module.exports = {
     bigCommerceLogLevel: 'info',
     bigCommerceClientSecret: '8rf7x5amirm0bfn5xxlwuo3tl22zh1i',
 
-    storeImagePath: 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/'
+    storeImagePath: 'https://store-5q1eg0d0bi.mybigcommerce.com/product_images/',
+
+
+    mySqlHost: 'ec2-18-219-254-128.us-east-2.compute.amazonaws.com',
+    mySqlUser: 'root',
+    mySqlPassword: 'pNetMarket',
+    mySqlDatabase: 'Eload',
+    mySqlPort: 3306
 }

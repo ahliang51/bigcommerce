@@ -28,6 +28,7 @@ export class ProfilePage {
   profilePicture = "";
   rootNavCtrl: NavController;
   storeCredit;
+  customerEcommerceId;
   accessCode;
 
   constructor(public navCtrl: NavController,
@@ -60,6 +61,7 @@ export class ProfilePage {
         console.log(JSON.stringify(data))
         this.storeCredit = data.result.store_credit;
         this.accessCode = data.result.notes;
+        this.customerEcommerceId = data.result.id;
         loading.dismiss();
       })
 
@@ -67,7 +69,10 @@ export class ProfilePage {
   }
 
   onTopUp() {
-    this.rootNavCtrl.push(TopUpPage);
+    this.rootNavCtrl.push(TopUpPage, {
+      accessCode: this.accessCode,
+      customerEcommerceId: this.customerEcommerceId
+    });
   }
 
   onSignOut() {
