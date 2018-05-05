@@ -86,7 +86,7 @@ router.post('/sign-up', (req, res, next) => {
     function createUserMongo(result, callback) {
         db.collection('users').insert({
             customerEcommerceId: result.customer_id,
-            phoneNumber: req.body.phoneNumber,
+            phoneNumber: req.body.phoneNumber.toString(),
             facebookId: req.body.facebookId,
             migrateTransactions: []
         }).then(data => {
@@ -231,7 +231,7 @@ router.post('/update-user-mobile', (req, res, next) => {
         if (err) {
             res.json({
                 success: false,
-                message: "Phone number has been registered"
+                message: "Phone number has been registered with another facebook id. Please use the correct phone number"
             })
         } else {
             res.json({
@@ -245,15 +245,20 @@ router.post('/update-user-mobile', (req, res, next) => {
         db.collection('users').findOne({
             phoneNumber: req.body.phoneNumber
         }).then(result => {
-            console.log(result)
+            console.log(req.body)
+            console.log("check " + JSON.stringify(result))
             //Number Exist
             if (result) {
-
-                if (result.customerEcommerceId == req.body.userId && req.body.phoneNumber == result.phoneNumber) {
+                if (result.customerEcommerceId == req.body.userId) {
                     callback(null, result)
                 } else {
                     callback("Phone number has been registered")
                 }
+                // if (result.customerEcommerceId == req.body.userId && req.body.phoneNumber == result.phoneNumber) {
+                //     callback(null, result)
+                // } else {
+                //     callback("Phone number has been registered")
+                // }
             }
             // Number does not exist
             else {
