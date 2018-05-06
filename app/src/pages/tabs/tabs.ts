@@ -8,6 +8,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 import { LoginPage } from '../login/login';
+import { EventPage } from '../event/event';
 
 declare var window;
 
@@ -19,7 +20,8 @@ export class TabsPage {
   tab1Root = HomePage;
   tab2Root = CartPage;
   tab3Root = ProfilePage;
-  tab4Root = HomePage;
+  tab4Root = EventPage;
+  tab5Root = HomePage;
   storeCredit;
   rootNavCtrl: NavController;
 
@@ -78,7 +80,7 @@ export class TabsPage {
     // else {
     //   this.pageTitle = "Profile"
     // }
-    if (ev.index == 3) {
+    if (ev.index == 4) {
       window.plugins.launcher.launch({ packageName: 'com.app.vivobee' }, success => {
 
       }, err => {

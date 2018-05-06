@@ -83,12 +83,4 @@ export class ProfilePage {
       }
     })
   }
-
-  onVivoBee() {
-    window.plugins.launcher.launch({ packageName: 'com.app.vivobee' }, success => {
-
-    }, err => {
-      window.location.href = "https://play.google.com/store/apps/details?id=com.app.vivobee";
-    });
-  };
 }

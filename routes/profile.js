@@ -54,10 +54,20 @@ router.post('/retrieve-user-info', (req, res, next) => {
 router.post('/top-up', (req, res, next) => {
     console.log(req.body)
 
+    //Initialise Connection
+    let connection = mysql.createConnection({
+        host: config.mySqlHost,
+        user: config.mySqlUser,
+        password: config.mySqlPassword,
+        database: config.mySqlDatabase,
+        port: config.mySqlPort
+    });
+
     async.waterfall([
         connectDatabase,
         topUp,
-        updateStoreCredit
+        updateStoreCredit,
+        insertAccessLog
     ], function (err, result) {
         if (err) {
             res.json({
@@ -73,14 +83,7 @@ router.post('/top-up', (req, res, next) => {
     });
 
     function connectDatabase(callback) {
-        //Initialise Connection
-        let connection = mysql.createConnection({
-            host: config.mySqlHost,
-            user: config.mySqlUser,
-            password: config.mySqlPassword,
-            database: config.mySqlDatabase,
-            port: config.mySqlPort
-        });
+
         connection.connect(error => {
             if (error) {
                 console.error('error connecting: ' + error.stack);
@@ -120,6 +123,13 @@ router.post('/top-up', (req, res, next) => {
                     .then(updatedResult => {
                         callback(null, "Successfully top up of $" + amount)
                     })
+            })
+    }
+
+    function insertAccessLog(message, callback) {
+        connection.query(`CALL WEB_ACCESS_LOG(?,?,?)`, ["Admin", req.body.userInfo.ipAddress, message + " from " + req.body.userInfo.customerEcommerceId],
+            (err, result, fields) => {
+                callback(message)
             })
     }
 })

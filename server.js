@@ -34,6 +34,7 @@ let app = express(),
 let auth = require('./routes/auth'),
   product = require('./routes/product'),
   profile = require('./routes/profile'),
+  event = require('./routes/event'),
   cart = require('./routes/cart')
 
 
@@ -68,6 +69,7 @@ app.use('/auth', auth);
 app.use('/product', product);
 app.use('/profile', profile);
 app.use('/cart', cart);
+app.use('/event', event);
 
 
 app.post('/test1', (req, res, next) => {

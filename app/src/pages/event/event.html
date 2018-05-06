@@ -1,0 +1,10 @@
+<ion-content padding>
+  <ion-item *ngFor="let event of eventArray">
+    <div class="title" text-center>
+      {{event.title}}
+    </div>
+    <div [innerHTML]="event.body" padding>
+      <!-- {{event.summary}} -->
+    </div>
+  </ion-item>
+</ion-content>

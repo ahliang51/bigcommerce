@@ -39,6 +39,9 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 import { TopUpPageModule } from '../pages/top-up/top-up.module';
 import { VerifyNumberPageModule } from '../pages/verify-number/verify-number.module';
 import { Push } from '@ionic-native/push';
+import { EventProvider } from '../providers/event/event';
+import { EventPage } from '../pages/event/event';
+import { EventPageModule } from '../pages/event/event.module';
 
 
 @NgModule({
@@ -57,6 +60,7 @@ import { Push } from '@ionic-native/push';
     ProfilePageModule,
     TopUpPageModule,
     VerifyNumberPageModule,
+    EventPageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),
@@ -74,7 +78,8 @@ import { Push } from '@ionic-native/push';
     ProductDetailPage,
     VerifyNumberPage,
     OrderPage,
-    TopUpPage
+    TopUpPage,
+    EventPage
   ],
   providers: [
     StatusBar,
@@ -89,7 +94,8 @@ import { Push } from '@ionic-native/push';
     CartProvider,
     InAppBrowser,
     WheelSelector,
-    Push
+    Push,
+    EventProvider
   ]
 })
 export class AppModule { }
