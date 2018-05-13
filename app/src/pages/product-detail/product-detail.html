@@ -43,7 +43,7 @@
       <ion-row *ngIf="productDetails.variants.length > 1">
         <ion-item>
           Variant
-          <button ion-button item-end (click)="onSelectVariant()" style="width:50%">
+          <button ion-button item-end color="gesel" (click)="onSelectVariant()" style="width:50%">
             {{variant}}
           </button>
         </ion-item>
@@ -56,7 +56,7 @@
       <ion-row>
         <ion-item>
           Quantity
-          <button ion-button item-end (click)="onSelectQuantity()" style="width:20%">
+          <button ion-button item-end color="gesel" (click)="onSelectQuantity()" style="width:20%">
             {{quantity}}
           </button>
         </ion-item>
@@ -90,7 +90,7 @@
   </ion-row> -->
 </ion-content>
 <ion-footer no-border>
-  <button ion-button full (click)="onAddToCart()">
+  <button ion-button full color="gesel" (click)="onAddToCart()">
     <ion-icon name="cart">
       Add To Cart
     </ion-icon>

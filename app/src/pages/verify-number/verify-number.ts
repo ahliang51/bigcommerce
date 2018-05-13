@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { Sim } from '@ionic-native/sim';
 import { Storage } from '@ionic/storage';
 import { TabsPage } from '../tabs/tabs';
+import { Facebook } from '@ionic-native/facebook';
 
 /**
  * Generated class for the VerifyNumberPage page.
@@ -19,6 +20,8 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class VerifyNumberPage {
 
+  facebookAppID = 589248748091275;
+
   phoneNumber: number = 0;
   email;
   name;
@@ -33,7 +36,8 @@ export class VerifyNumberPage {
     private loginService: LoginProvider,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private fb: Facebook, ) {
 
     this.sim.getSimInfo().then(
       (info) => {
@@ -88,59 +92,84 @@ export class VerifyNumberPage {
       position: 'bottom'
     });
 
-    console.log(this.phoneNumber);
-    //Retrieving user object and storing phone number inside the user object
-    this.storage.get('user').then(result => {
-      console.log(JSON.stringify(result))
-      result.phoneNumber = this.phoneNumber
-      this.email = result.email ? result.email : "";
-      this.name = result.username;
-      this.facebookId = result.facebookId;
-      this.storage.set('user', result);
+    let permissions = new Array<string>();
+    let params = new Array<string>();
+    permissions = ["public_profile", "email"];
+    this.fb.login(permissions)
+      .then(response => {
+        let userId = response.authResponse.userID;
 
-      //Check whether does user exist in our database
-      this.loginService.checkUserExist(this.email, this.phoneNumber, this.facebookId).subscribe(data => {
-        console.log(JSON.stringify(data))
-        // console.log(JSON.stringify(data))
-        if (data.userExist) {
-          console.log("1")
-          console.log(JSON.stringify(data))
-          this.loginService.updateUserMobile(data.userId, this.phoneNumber).subscribe(result => {
-            console.log(JSON.stringify(result))
-            if (result.success) {
+        // console.log(userId)
+        // //Getting name and gender properties
+        return userId
+      }).then(userId => {
+        this.fb.api("/me?fields=name,gender,email", params)
+          .then(user => {
+            user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
+            console.log(user.name)
+            console.log(user.picture)
+            console.log(user.email)
+            this.storage.set('user', {
+              facebookId: userId,
+              username: user.name,
+              profilePicture: user.picture,
+              email: user.email
+            })
+          }).then(user => {
+            //Retrieving user object and storing phone number inside the user object
+            this.storage.get('user').then(result => {
+              console.log(JSON.stringify(result))
+              result.phoneNumber = this.phoneNumber
+              this.email = result.email ? result.email : "";
+              this.name = result.username;
+              this.facebookId = result.facebookId;
+              this.storage.set('user', result);
 
-              this.storage.set('token', result.token).then(() => {
-                loading.dismiss();
-                toast.present();
-                this.navCtrl.setRoot(TabsPage)
+              //Check whether does user exist in our database
+              this.loginService.checkUserExist(this.email, this.phoneNumber, this.facebookId).subscribe(data => {
+                console.log(JSON.stringify(data))
+                // console.log(JSON.stringify(data))
+                if (data.userExist) {
+                  console.log("1")
+                  console.log(JSON.stringify(data))
+                  this.loginService.updateUserMobile(data.userId, this.phoneNumber).subscribe(result => {
+                    console.log(JSON.stringify(result))
+                    if (result.success) {
+
+                      this.storage.set('token', result.token).then(() => {
+                        loading.dismiss();
+                        toast.present();
+                        this.navCtrl.setRoot(TabsPage)
+                      })
+                    }
+                    else {
+                      let toast = this.toastCtrl.create({
+                        message: result.message,
+                        duration: 3000,
+                        position: 'bottom'
+                      });
+                      toast.present();
+                      loading.dismiss();
+                    }
+                  })
+                }
+                else {
+                  console.log("2")
+                  this.loginService.signUp(this.name, this.email, this.phoneNumber, this.facebookId).subscribe(result => {
+                    console.log(JSON.stringify(result))
+
+                    if (result.success) {
+                      this.storage.set('token', result.token).then(() => {
+                        loading.dismiss();
+                        toast.present();
+                        this.navCtrl.setRoot(TabsPage)
+                      })
+                    }
+                  })
+                }
               })
-            }
-            else {
-              let toast = this.toastCtrl.create({
-                message: result.message,
-                duration: 3000,
-                position: 'bottom'
-              });
-              toast.present();
-              loading.dismiss();
-            }
+            })
           })
-        }
-        else {
-          console.log("2")
-          this.loginService.signUp(this.name, this.email, this.phoneNumber, this.facebookId).subscribe(result => {
-            console.log(JSON.stringify(result))
-
-            if (result.success) {
-              this.storage.set('token', result.token).then(() => {
-                loading.dismiss();
-                toast.present();
-                this.navCtrl.setRoot(TabsPage)
-              })
-            }
-          })
-        }
       })
-    })
   }
 }

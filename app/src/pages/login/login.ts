@@ -3,7 +3,7 @@ import { VerifyNumberPage } from './../verify-number/verify-number';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { LoginProvider } from '../../providers/login/login';
-import { Facebook } from '@ionic-native/facebook';
+// import { Facebook } from '@ionic-native/facebook';
 import { TabsPage } from '../tabs/tabs';
 import { Storage } from '@ionic/storage';
 
@@ -21,7 +21,7 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage {
 
-  facebookAppID = 589248748091275;
+  // facebookAppID = 589248748091275;
   simPermission = false;
 
   verifyNumberPage = false; // For user to verify their mobile number
@@ -29,7 +29,7 @@ export class LoginPage {
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private loginService: LoginProvider,
-    private fb: Facebook,
+    // private fb: Facebook,
     private storage: Storage,
     private sim: Sim,
     private alertCtrl: AlertController,
@@ -156,33 +156,33 @@ export class LoginPage {
 
   onSignUp() {
 
-    let permissions = new Array<string>();
-    let params = new Array<string>();
-    permissions = ["public_profile", "email"];
-    this.fb.login(permissions)
-      .then(response => {
-        let userId = response.authResponse.userID;
+    // let permissions = new Array<string>();
+    // let params = new Array<string>();
+    // permissions = ["public_profile", "email"];
+    // this.fb.login(permissions)
+    //   .then(response => {
+    //     let userId = response.authResponse.userID;
 
-        // console.log(userId)
-        // //Getting name and gender properties
-        return userId
-      }).then(userId => {
-        this.fb.api("/me?fields=name,gender,email", params)
-          .then(user => {
-            user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
-            console.log(user.name)
-            console.log(user.picture)
-            console.log(user.email)
-            this.storage.set('user', {
-              facebookId: userId,
-              username: user.name,
-              profilePicture: user.picture,
-              email: user.email
-            })
-          });
-        this.navCtrl.push(VerifyNumberPage)
-      })
-      .catch(e => console.log('Error logging into Facebook' + JSON.stringify(e)));
+    //     // console.log(userId)
+    //     // //Getting name and gender properties
+    //     return userId
+    //   }).then(userId => {
+    //     this.fb.api("/me?fields=name,gender,email", params)
+    //       .then(user => {
+    //         user.picture = "https://graph.facebook.com/" + userId + "/picture?type=large";
+    //         console.log(user.name)
+    //         console.log(user.picture)
+    //         console.log(user.email)
+    //         this.storage.set('user', {
+    //           facebookId: userId,
+    //           username: user.name,
+    //           profilePicture: user.picture,
+    //           email: user.email
+    //         })
+    //       });
+    this.navCtrl.push(VerifyNumberPage)
+    // })
+    // .catch(e => console.log('Error logging into Facebook' + JSON.stringify(e)));
   }
 
 }
