@@ -46,4 +46,13 @@ export class ProfileProvider {
     }, { headers: headers })
       .map(res => res.json());
   }
+
+  retrieveOrderHistory(customerEcommerceId) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(vars.apiUrl + '/profile/order-history', {
+      customerEcommerceId: customerEcommerceId,
+    }, { headers: headers })
+      .map(res => res.json());
+  }
 }

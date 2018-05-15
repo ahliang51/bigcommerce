@@ -28,11 +28,9 @@ import { VerifyNumberPage } from '../pages/verify-number/verify-number';
 import { Sim } from '@ionic-native/sim';
 import { ProfileProvider } from '../providers/profile/profile';
 import { CartProvider } from '../providers/cart/cart';
-import { OrderPage } from '../pages/order/order';
 import { TopUpPage } from '../pages/top-up/top-up';
 import { CartPageModule } from '../pages/cart/cart.module';
 import { LoginPageModule } from '../pages/login/login.module';
-import { OrderPageModule } from '../pages/order/order.module';
 import { ProductCategoriesPageModule } from '../pages/product-categories/product-categories.module';
 import { ProductDetailPageModule } from '../pages/product-detail/product-detail.module';
 import { ProfilePageModule } from '../pages/profile/profile.module';
@@ -42,6 +40,8 @@ import { Push } from '@ionic-native/push';
 import { EventProvider } from '../providers/event/event';
 import { EventPage } from '../pages/event/event';
 import { EventPageModule } from '../pages/event/event.module';
+import { OrderHistoryPage } from '../pages/order-history/order-history';
+import { OrderHistoryPageModule } from '../pages/order-history/order-history.module';
 
 
 @NgModule({
@@ -54,12 +54,12 @@ import { EventPageModule } from '../pages/event/event.module';
     HttpModule,
     CartPageModule,
     LoginPageModule,
-    OrderPageModule,
     ProductCategoriesPageModule,
     ProductDetailPageModule,
     ProfilePageModule,
     TopUpPageModule,
     VerifyNumberPageModule,
+    OrderHistoryPageModule,
     EventPageModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
@@ -77,9 +77,9 @@ import { EventPageModule } from '../pages/event/event.module';
     ProductCategoriesPage,
     ProductDetailPage,
     VerifyNumberPage,
-    OrderPage,
     TopUpPage,
-    EventPage
+    EventPage,
+    OrderHistoryPage
   ],
   providers: [
     StatusBar,

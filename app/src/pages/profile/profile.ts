@@ -7,6 +7,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { MyApp } from '../../app/app.component';
 import { SuperTabsController } from 'ionic2-super-tabs';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { OrderHistoryPage } from '../order-history/order-history';
 
 declare var window;
 
@@ -82,5 +83,11 @@ export class ProfilePage {
         this.rootNavCtrl.setRoot(LoginPage)
       }
     })
+  }
+
+  onOrderHistory() {
+    this.rootNavCtrl.push(OrderHistoryPage, {
+      customerEcommerceId: this.customerEcommerceId
+    });
   }
 }

@@ -18,10 +18,10 @@ declare var window;
 export class TabsPage {
 
   tab1Root = HomePage;
-  tab2Root = CartPage;
-  tab3Root = ProfilePage;
-  tab4Root = EventPage;
-  tab5Root = HomePage;
+  tab2Root = EventPage;
+  tab3Root = HomePage;
+  tab4Root = CartPage;
+  tab5Root = ProfilePage;
   storeCredit;
   rootNavCtrl: NavController;
 
@@ -80,7 +80,7 @@ export class TabsPage {
     // else {
     //   this.pageTitle = "Profile"
     // }
-    if (ev.index == 4) {
+    if (ev.index == 2) {
       window.plugins.launcher.launch({ packageName: 'com.app.vivobee' }, success => {
 
       }, err => {
