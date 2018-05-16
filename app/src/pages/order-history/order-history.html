@@ -14,6 +14,25 @@
 
 
 <ion-content padding>
+  <expandable-list>
+    <expandable-list-item *ngFor="let order of Object.keys(ordersObject).slice().reverse()">
+      <span title>Order Number #{{order}}</span>
+      <div item *ngFor="let item of ordersObject[order];let last = last">
+        <p>
+          {{item.name}} X {{item.quantity}}
+        </p>
+        <div *ngIf="last">
+          <p>
+            Date Created : {{item.date_created | date:'fullDate'}}
+          </p>
+          <p>
+            Total : {{item.total | currency}}
+          </p>
+        </div>
+      </div>
+    </expandable-list-item>
+  </expandable-list>
+
   <button [attr.data-target]="'#' + order" class="btn btn-primary container" data-toggle="collapse" *ngFor="let order of Object.keys(ordersObject).slice().reverse()">
     Order ID : {{order}}
     <div [attr.id]="order" class="collapse">

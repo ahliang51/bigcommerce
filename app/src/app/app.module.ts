@@ -42,7 +42,8 @@ import { EventPage } from '../pages/event/event';
 import { EventPageModule } from '../pages/event/event.module';
 import { OrderHistoryPage } from '../pages/order-history/order-history';
 import { OrderHistoryPageModule } from '../pages/order-history/order-history.module';
-
+import { ExpandableListModule } from 'angular2-expandable-list';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,8 @@ import { OrderHistoryPageModule } from '../pages/order-history/order-history.mod
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),
     IonicStorageModule.forRoot(),
+    ExpandableListModule,
+    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

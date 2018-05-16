@@ -159,7 +159,6 @@ router.post('/order-history', (req, res, next) => {
                 message: err
             })
         } else {
-            console.log(result)
             res.json({
                 success: true,
                 result: result
@@ -169,6 +168,7 @@ router.post('/order-history', (req, res, next) => {
 
     function retrieveOrders(callback) {
         bigCommerce.get('/orders?customer_id=' + req.body.customerEcommerceId).then(data => {
+            console.log(data)
             callback(null, data)
         })
     }
@@ -203,12 +203,10 @@ router.post('/order-history', (req, res, next) => {
                         productInfoArray.push(temp)
                     }
                 }
-                console.log(productInfoArray)
                 if (productInfoArray.length > 0) {
                     //Group by Order Id
                     result = productInfoArray.groupBy('order_id');
                     // Sort Order Id by descending
-                    console.log(result.orderInfo)
                 }
                 callback(null, result)
             });
