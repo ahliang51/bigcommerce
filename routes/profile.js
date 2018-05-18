@@ -6,17 +6,10 @@ let express = require('express'),
     async = require('async'),
     config = require('../config/config'),
     mysql = require('mysql'),
+    _ = require('underscore'),
     db, jwt, bigCommerce, bigCommerceV3;
 
-// Group by Function
-Array.prototype.groupBy = function (prop) {
-    return this.reduce(function (groups, item) {
-        const val = item[prop]
-        groups[val] = groups[val] || []
-        groups[val].push(item)
-        return groups
-    }, {})
-}
+
 
 router.post('/retrieve-user-info', (req, res, next) => {
     //Retrieve JWT
@@ -205,11 +198,12 @@ router.post('/order-history', (req, res, next) => {
                 }
                 if (productInfoArray.length > 0) {
                     //Group by Order Id
-                    result = productInfoArray.groupBy('order_id');
-                    // Sort Order Id by descending
+                    result = _.groupBy(productInfoArray, 'order_id');
                 }
                 callback(null, result)
             });
     }
+
+
 });
 module.exports = router;
