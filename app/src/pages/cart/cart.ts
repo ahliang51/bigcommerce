@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { OrderPage } from '../order/order';
 
 
 /**
