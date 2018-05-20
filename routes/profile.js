@@ -195,7 +195,8 @@ router.post('/order-history', (req, res, next) => {
                                     quantity: order.quantity,
                                     date_created: orderArray.date_created,
                                     total: orderArray.total,
-                                    imageUrl: product.primary_image.standard_url
+                                    imageUrl: product.primary_image.standard_url,
+                                    price: product.calculated_price
                                 }
                                 productInfoArray.push(temp)
                                 callback();

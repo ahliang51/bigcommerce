@@ -17,11 +17,11 @@
   <expandable-list>
     <expandable-list-item *ngFor="let order of Object.keys(ordersObject).slice().reverse()">
       <span title>Order Number #{{order}}</span>
-      <div item *ngFor="let item of ordersObject[order];let last = last">
+      <!-- <div item *ngFor="let item of ordersObject[order];let last = last">
         <div class="row">
           <img [src]="item.imageUrl" height="80" width="80" class="product-image">
           <p class="product-description">
-            {{item.name}} X {{item.quantity}}
+            {{item.name}} X {{item.quantity}} Price : {{item.price | currency}}
           </p>
           <div *ngIf="last">
             <p>
@@ -32,7 +32,28 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
+      <ion-row item *ngFor="let item of ordersObject[order];let last = last">
+        <ion-col col-4>
+          <img [src]="item.imageUrl" height="80" width="80">
+        </ion-col>
+        <ion-col col-8>
+          <p>
+            {{item.name}} X {{item.quantity}}
+          </p>
+          <p>
+            Price : {{item.price | currency}}
+          </p>
+          <div *ngIf="last">
+            <p>
+              Date Purchased : {{item.date_created | date:'fullDate'}}
+            </p>
+            <p>
+              Total : {{item.total | currency}}
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
     </expandable-list-item>
   </expandable-list>
 </ion-content>
