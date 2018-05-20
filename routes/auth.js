@@ -48,7 +48,8 @@ router.post('/sign-up', (req, res, next) => {
         let accessCode = chance.string({
             length: 6,
             // Alphanumeric
-            pool: 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890'
+            //Remove I, L , O , o  all those common misinterpreted characters
+            pool: 'QWERTYUPASDFGHJKZXCVBNMqwertyupasdfghjkzxcvbnm234567890'
         });
 
         bigCommerce.post('/customers', {

@@ -102,10 +102,10 @@ export class ProductDetailPage {
     }).then(
       result => {
         this.variant = result[0].description;
-        console.log(JSON.stringify(result))
+        // console.log(JSON.stringify(result))
         // console.log(JSON.stringify(this.productDetails.variants[result[0].index - 1]));
         this.variantIndex = result[0].index
-        console.log(result[0].description + ' at index: ' + result[0].index);
+        // console.log(result[0].description + ' at index: ' + result[0].index);
       },
       err => console.log('Error: ', err)
     );
@@ -166,7 +166,7 @@ export class ProductDetailPage {
       }
 
     }
-    if (this.productDetails.variants[this.variantIndex].inventory_level <= this.quantity) {
+    if (this.productDetails.variants[this.variantIndex].inventory_level < this.quantity) {
       let alert = this.alertCtrl.create({
         title: 'Inventory Low',
         subTitle: 'Not enough stock',

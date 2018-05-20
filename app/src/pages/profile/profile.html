@@ -44,13 +44,20 @@
       </ion-label>
     </ion-item>
   </ion-row>
-  <ion-row>
+  <!-- <ion-row>
     <button ion-item (click)="onOrderHistory()">
       <ion-label>My Orders</ion-label>
     </button>
-  </ion-row>
+  </ion-row> -->
 
   <ion-grid padding-top>
+    <ion-row text-center>
+      <ion-col text-center>
+        <button ion-button round outline (click)="onOrderHistory()">
+          <span class="fas fa-cart-arrow-down"></span> &nbsp; My Orders
+        </button>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col text-center>
         <button ion-button round outline (click)="onTopUp()">
@@ -65,6 +72,7 @@
         </button>
       </ion-col>
     </ion-row>
+
   </ion-grid>
 
 </ion-content>

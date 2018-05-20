@@ -161,10 +161,10 @@ router.post('/order-history', (req, res, next) => {
 
     function retrieveOrders(callback) {
         bigCommerce.get('/orders?customer_id=' + req.body.customerEcommerceId).then(data => {
-            console.log(data)
             callback(null, data)
         })
     }
+
 
     function retrieveProductInformation(result, callback) {
         // console.log(result)
@@ -183,24 +183,51 @@ router.post('/order-history', (req, res, next) => {
                         callback()
                     });
             }, err => {
-                // console.log(result)
-                for (let orderArray of callbackArray) {
-                    for (let order of orderArray) {
-                        let temp = {
-                            order_id: order.order_id,
-                            name: order.name,
-                            quantity: order.quantity,
-                            date_created: orderArray.date_created,
-                            total: orderArray.total
-                        }
-                        productInfoArray.push(temp)
+
+                // assuming openFiles is an array of file names
+                async.each(callbackArray, function (orderArray, callback) {
+                    async.each(orderArray, function (order, callback) {
+                        bigCommerce.get('/products/' + order.product_id + '?include=@summary')
+                            .then(product => {
+                                let temp = {
+                                    order_id: order.order_id,
+                                    name: order.name,
+                                    quantity: order.quantity,
+                                    date_created: orderArray.date_created,
+                                    total: orderArray.total,
+                                    imageUrl: product.primary_image.standard_url
+                                }
+                                productInfoArray.push(temp)
+                                callback();
+                            })
+                    }, function (err) {
+                        callback();
+                    });
+                }, function (err) {
+                    if (productInfoArray.length > 0) {
+                        //Group by Order Id
+                        result = _.groupBy(productInfoArray, 'order_id');
                     }
-                }
-                if (productInfoArray.length > 0) {
-                    //Group by Order Id
-                    result = _.groupBy(productInfoArray, 'order_id');
-                }
-                callback(null, result)
+                    console.log(result)
+                    callback(null, result)
+                });
+                // for (let orderArray of callbackArray) {
+                //     for (let order of orderArray) {
+                //         let temp = {
+                //             order_id: order.order_id,
+                //             name: order.name,
+                //             quantity: order.quantity,
+                //             date_created: orderArray.date_created,
+                //             total: orderArray.total
+                //         }
+                //         productInfoArray.push(temp)
+                //     }
+                // }
+                // if (productInfoArray.length > 0) {
+                //     //Group by Order Id
+                //     result = _.groupBy(productInfoArray, 'order_id');
+                // }
+                // callback(null, result)
             });
     }
 
