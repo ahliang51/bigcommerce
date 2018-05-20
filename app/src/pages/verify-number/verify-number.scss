@@ -8,6 +8,17 @@ page-verify-number {
   .back-button {
     color: white;
   }
+  .flag-icon-background {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
+  .flag {
+    outline: 0.5px solid grey;
+    height: 50px !important;
+    width: 50px !important;
+  }
+  .ion-input {}
 }
 
 .numberHeader {
@@ -17,6 +28,13 @@ page-verify-number {
 
 .phoneNumber {
   font-size: 1.5em;
+}
+
+.flag-span {
+  display: flex;
+  /*Uncomment below to center horizontally*/
+  justify-content: center;
+  align-items: center;
 }
 
 .validateMessage {

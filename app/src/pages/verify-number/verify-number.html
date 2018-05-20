@@ -15,13 +15,18 @@
 
 <ion-content padding>
   <ion-grid>
+    <!-- <span class="flag-icon flag-icon-sg"></span> -->
     <ion-row>
       <ion-col text-center class="numberHeader">
         Enter Mobile Number
       </ion-col>
     </ion-row>
     <ion-row class="phoneNumber">
-      <ion-col text-center>
+      <ion-col col-4 class="flag-span">
+        <span class="flag-icon flag-icon-sg flag-icon-squared flag"></span>
+        &nbsp; +65
+      </ion-col>
+      <ion-col col-8 text-center>
         <ion-item>
           <!-- <ion-label color="primary" floating>Phone Number</ion-label> -->
           <ion-input text-center type="number" name="phoneNumber" [(ngModel)]="phoneNumber" (ionChange)="textChange(phoneNumber)" style="text-align:middle">

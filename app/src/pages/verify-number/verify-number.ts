@@ -1,6 +1,6 @@
 import { LoginProvider } from './../../providers/login/login';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, ToastController } from 'ionic-angular';
 import { Sim } from '@ionic-native/sim';
 import { Storage } from '@ionic/storage';
 import { TabsPage } from '../tabs/tabs';
@@ -30,11 +30,9 @@ export class VerifyNumberPage {
   facebookId;
 
   constructor(private navCtrl: NavController,
-    private navParams: NavParams,
     private sim: Sim,
     private storage: Storage,
     private loginService: LoginProvider,
-    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private fb: Facebook, ) {
@@ -42,9 +40,10 @@ export class VerifyNumberPage {
     this.sim.getSimInfo().then(
       (info) => {
         console.log('Sim info: ', JSON.stringify(info))
-        this.phoneNumber = parseInt(info.phoneNumber.substring(1, info.phoneNumber.length));
+        this.phoneNumber = parseInt(info.phoneNumber.substring(3, info.phoneNumber.length));
         if (this.phoneNumber.toString().length > 0) {
           console.log("asdasd")
+          console.log(this.phoneNumber);
           this.validateNumber = false;
         }
       },
@@ -58,16 +57,16 @@ export class VerifyNumberPage {
   }
 
   textChange(phoneNumber) {
-    if ((phoneNumber.toString()).substring(0, 2) != "65") {
-      this.validateNumber = true;
-      this.validateMessage = "Please input SG country code";
-    }
+    // if ((phoneNumber.toString()).substring(0, 2) != "65") {
+    //   this.validateNumber = true;
+    //   this.validateMessage = "Please input SG country code";
+    // }
     //Phone Number consist of 8 character and 2 character of country code
-    else if (phoneNumber.toString().length < 10) {
+    if (phoneNumber.toString().length < 8) {
       this.validateNumber = true;
       this.validateMessage = "Please key in 8 digit mobile number";
     }
-    else if (phoneNumber.toString().length > 10) {
+    else if (phoneNumber.toString().length > 8) {
       this.validateNumber = true;
       this.validateMessage = "Please key in 8 digit mobile number";
     }
@@ -78,6 +77,11 @@ export class VerifyNumberPage {
   }
 
   onConfirm() {
+
+    //Append Country code to phone number
+    let updatedNumber = parseInt("65" + this.phoneNumber);
+
+
     //Sets the loading spinner
     let loading = this.loadingCtrl.create({
       content: 'Please wait...',
@@ -119,20 +123,20 @@ export class VerifyNumberPage {
             //Retrieving user object and storing phone number inside the user object
             this.storage.get('user').then(result => {
               console.log(JSON.stringify(result))
-              result.phoneNumber = this.phoneNumber
+              result.phoneNumber = updatedNumber
               this.email = result.email ? result.email : "";
               this.name = result.username;
               this.facebookId = result.facebookId;
               this.storage.set('user', result);
 
               //Check whether does user exist in our database
-              this.loginService.checkUserExist(this.email, this.phoneNumber, this.facebookId).subscribe(data => {
+              this.loginService.checkUserExist(this.email, updatedNumber, this.facebookId).subscribe(data => {
                 console.log(JSON.stringify(data))
                 // console.log(JSON.stringify(data))
                 if (data.userExist) {
                   console.log("1")
                   console.log(JSON.stringify(data))
-                  this.loginService.updateUserMobile(data.userId, this.phoneNumber).subscribe(result => {
+                  this.loginService.updateUserMobile(data.userId, updatedNumber).subscribe(result => {
                     console.log(JSON.stringify(result))
                     if (result.success) {
 
@@ -155,7 +159,7 @@ export class VerifyNumberPage {
                 }
                 else {
                   console.log("2")
-                  this.loginService.signUp(this.name, this.email, this.phoneNumber, this.facebookId).subscribe(result => {
+                  this.loginService.signUp(this.name, this.email, updatedNumber, this.facebookId).subscribe(result => {
                     console.log(JSON.stringify(result))
 
                     if (result.success) {

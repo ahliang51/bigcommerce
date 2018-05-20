@@ -8,4 +8,14 @@ page-order-history {
   .back-button {
     color: white;
   }
+  .product-image {
+    float: left;
+  }
+  .product-description {
+    float: right;
+    margin-left: 5%;
+  }
+  .row {
+    margin-bottom: 5%;
+  }
 }
