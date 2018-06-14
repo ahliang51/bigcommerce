@@ -11,17 +11,16 @@
     </ion-title>
     <!-- <div style='text-align: center;float:left'>
     </div> -->
-    <ion-buttons end style="color : #3f008e;font-weight: bold;font-family : 'Oswald', sans-serif;">G-Credits : {{storeCredit | currency}}</ion-buttons>
+    <ion-buttons end style="color : #3f008e;font-weight: bold;font-family : 'Oswald', sans-serif;">G-CREDITS : {{storeCredit | currency}}</ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content no-bounce>
-
   <super-tabs id="mainTabs" selectedTabIndex="0" toolbarColor="dark" toolbarBackground="white" [config]="{ sideMenu: 'left' }"
     (tabSelect)="onTabSelect($event)">
     <super-tab [root]="tab1Root" icon="home" title="Home"></super-tab>
     <super-tab [root]="tab2Root" icon="contacts" title="Events"></super-tab>
-    <super-tab [root]="tab3Root" icon="contacts" title="VivoBee"></super-tab>
     <super-tab [root]="tab4Root" icon="cart" title="Cart"></super-tab>
     <super-tab [root]="tab5Root" icon="contacts" title="Profile"></super-tab>
+    <super-tab [root]="tab3Root" icon="contacts" title="VivoBee"></super-tab>
   </super-tabs>
 </ion-content>

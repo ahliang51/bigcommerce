@@ -8,14 +8,14 @@ page-order-history {
   .back-button {
     color: white;
   }
+  .item-row {
+    // border-style: solid;
+    // border-width: 0.1px;
+  }
   .product-image {
     float: left;
   }
   .product-description {
-    float: right;
-    margin-left: 5%;
-  }
-  .row {
-    margin-bottom: 5%;
+    margin-top: -10%;
   }
 }

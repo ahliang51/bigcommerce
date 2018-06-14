@@ -22,7 +22,7 @@ export class VerifyNumberPage {
 
   facebookAppID = 589248748091275;
 
-  phoneNumber: number = 0;
+  phoneNumber: number;
   email;
   name;
   validateNumber: boolean = false;
@@ -40,11 +40,13 @@ export class VerifyNumberPage {
     this.sim.getSimInfo().then(
       (info) => {
         console.log('Sim info: ', JSON.stringify(info))
-        this.phoneNumber = parseInt(info.phoneNumber.substring(3, info.phoneNumber.length));
-        if (this.phoneNumber.toString().length > 0) {
+        if (info.phoneNumber) {
+          this.phoneNumber = parseInt(info.phoneNumber.substring(3, info.phoneNumber.length));
+        }
+        else {
           console.log("asdasd")
           console.log(this.phoneNumber);
-          this.validateNumber = false;
+          this.validateNumber = true;
         }
       },
       (err) => console.log('Unable to get sim info: ', err)

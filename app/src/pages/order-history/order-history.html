@@ -33,26 +33,35 @@
           </div>
         </div>
       </div> -->
+
       <ion-row item *ngFor="let item of ordersObject[order];let last = last">
-        <ion-col col-4>
-          <img [src]="item.imageUrl" height="80" width="80">
-        </ion-col>
-        <ion-col col-8>
+        <ion-grid>
+          <ion-row class="item-row">
+            <ion-col col-4>
+              <div class="product-image">
+                <img [src]="item.imageUrl" height="80" width="80">
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div class="product-description">
+                <p>
+                  {{item.name}} X {{item.quantity}}
+                </p>
+                <p>
+                  Price : {{item.price | currency}}
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div *ngIf="last">
           <p>
-            {{item.name}} X {{item.quantity}}
+            Date Purchased : {{item.date_created | date:'long'}}
           </p>
           <p>
-            Price : {{item.price | currency}}
+            Total : {{item.total | currency}}
           </p>
-          <div *ngIf="last">
-            <p>
-              Date Purchased : {{item.date_created | date:'fullDate'}}
-            </p>
-            <p>
-              Total : {{item.total | currency}}
-            </p>
-          </div>
-        </ion-col>
+        </div>
       </ion-row>
     </expandable-list-item>
   </expandable-list>

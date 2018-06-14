@@ -80,7 +80,7 @@ export class TabsPage {
     // else {
     //   this.pageTitle = "Profile"
     // }
-    if (ev.index == 2) {
+    if (ev.index == 4) {
       window.plugins.launcher.launch({ packageName: 'com.app.vivobee' }, success => {
 
       }, err => {

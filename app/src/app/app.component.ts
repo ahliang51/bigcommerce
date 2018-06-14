@@ -102,7 +102,6 @@ export class MyApp {
 
       // watch network for a disconnect
       let disconnectSubscription = network.onDisconnect().subscribe(() => {
-        console.log('network was disconnected :-(');
         let toast = toastCtrl.create({
           message: 'No internet',
           duration: 3000,
