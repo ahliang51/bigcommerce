@@ -1,0 +1,19 @@
+page-tutorial {
+  .tutorial-images {
+    height: auto;
+    width: 250px;
+  }
+  .step-number {
+    font-size: 2em;
+  }
+  .slides {
+    margin-top: -10%
+  }
+  .scroll-content {
+    display: flex;
+    flex-direction: column;
+    ion-slides {
+      display: flex;
+    }
+  }
+}

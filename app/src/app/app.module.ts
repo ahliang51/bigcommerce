@@ -44,6 +44,8 @@ import { OrderHistoryPage } from '../pages/order-history/order-history';
 import { OrderHistoryPageModule } from '../pages/order-history/order-history.module';
 import { ExpandableListModule } from 'angular2-expandable-list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { TutorialPageModule } from '../pages/tutorial/tutorial.module';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProfilePageModule,
     TopUpPageModule,
     VerifyNumberPageModule,
+    TutorialPageModule,
     OrderHistoryPageModule,
     EventPageModule,
     BrowserModule,
@@ -82,7 +85,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     VerifyNumberPage,
     TopUpPage,
     EventPage,
-    OrderHistoryPage
+    OrderHistoryPage,
+    TutorialPage
   ],
   providers: [
     StatusBar,

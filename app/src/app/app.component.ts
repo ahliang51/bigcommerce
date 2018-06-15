@@ -12,6 +12,7 @@ import { Network } from '@ionic-native/network';
 import { Facebook } from '@ionic-native/facebook';
 
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 
 @Component({
   templateUrl: 'app.html'
@@ -40,17 +41,17 @@ export class MyApp {
       splashScreen.hide();
 
 
-      // this.rootPage = VerifyNumberPage;
+      this.rootPage = TutorialPage;
 
-      fb.getLoginStatus().then(result => {
-        console.log(JSON.stringify(result))
-        if (result.status == "connected") {
-          this.rootPage = TabsPage;
-        }
-        else {
-          this.rootPage = LoginPage;
-        }
-      })
+      // fb.getLoginStatus().then(result => {
+      //   console.log(JSON.stringify(result))
+      //   if (result.status == "connected") {
+      //     this.rootPage = TabsPage;
+      //   }
+      //   else {
+      //     this.rootPage = LoginPage;
+      //   }
+      // })
 
       //Handling of back button
       platform.registerBackButtonAction(() => {
