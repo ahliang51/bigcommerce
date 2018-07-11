@@ -165,18 +165,28 @@ export class CartPage {
         console.log('radio data:', data);
         this.testradioOpen = false;
         this.testradioResult = data;
+        let loading = this.loadingCtrl.create({
+          content: 'Please wait...',
+          duration: 10000
+        });
+        loading.present();
 
         this.storage.get('cart').then(cart => {
           this.cartService.updateCart(cart, this.cartArray[index].id, this.cartArray[index].product_id, data).subscribe(result => {
-            this.ionViewDidEnter();
+            loading.dismiss();
+            if (result.code) {
+              let alert = this.alertCtrl.create({
+                title: 'Not Enough Stock',
+                subTitle: 'We do not have enough stock for the quantity you had chosen',
+                buttons: ['Dismiss']
+              });
+              alert.present();
+            }
+            else {
+              this.ionViewDidEnter();
+            }
           })
-
         })
-
-        // this.cartArray[index].quantity = data;
-        // this.storage.set('cart', this.cartArray).then(() => {
-        //   this.ionViewWillEnter();
-        // });
       }
     });
     alert.present().then(() => {
@@ -185,12 +195,18 @@ export class CartPage {
   }
 
   checkOut() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      duration: 10000
+    });
+    loading.present();
+
     let paymentMade = false;
     this.storage.get('cart').then(cartId => {
       console.log(cartId)
       this.storage.get('token').then(token => {
         this.cartService.placeOrder(token, cartId).subscribe(data => {
-          // console.log(JSON.stringify(data))
+          loading.dismiss();
           this.platform.ready().then(() => {
             let browser = this.inAppBrowser.create(data.result, '_blank', {
               location: 'no',

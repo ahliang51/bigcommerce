@@ -58,7 +58,8 @@ router.post('/update-cart', (req, res, next) => {
                 product_id: req.body.productId
             }
         })
-        .then(data => res.json(data));
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
 })
 
 // router.post('/retrieve-cart', (req, res, next) => {

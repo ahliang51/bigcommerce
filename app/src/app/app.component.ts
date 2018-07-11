@@ -41,17 +41,17 @@ export class MyApp {
       splashScreen.hide();
 
 
-      this.rootPage = TutorialPage;
+      // this.rootPage = TutorialPage;
 
-      // fb.getLoginStatus().then(result => {
-      //   console.log(JSON.stringify(result))
-      //   if (result.status == "connected") {
-      //     this.rootPage = TabsPage;
-      //   }
-      //   else {
-      //     this.rootPage = LoginPage;
-      //   }
-      // })
+      fb.getLoginStatus().then(result => {
+        console.log(JSON.stringify(result))
+        if (result.status == "connected") {
+          this.rootPage = TabsPage;
+        }
+        else {
+          this.rootPage = LoginPage;
+        }
+      })
 
       //Handling of back button
       platform.registerBackButtonAction(() => {

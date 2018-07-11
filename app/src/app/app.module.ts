@@ -55,6 +55,7 @@ import { TutorialPageModule } from '../pages/tutorial/tutorial.module';
   ],
   imports: [
     HttpModule,
+    BrowserAnimationsModule,
     CartPageModule,
     LoginPageModule,
     ProductCategoriesPageModule,
@@ -70,7 +71,6 @@ import { TutorialPageModule } from '../pages/tutorial/tutorial.module';
     SuperTabsModule.forRoot(),
     IonicStorageModule.forRoot(),
     ExpandableListModule,
-    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
