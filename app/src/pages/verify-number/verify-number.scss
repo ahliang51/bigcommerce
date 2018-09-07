@@ -8,22 +8,9 @@ page-verify-number {
   .back-button {
     color: white;
   }
-  .flag-icon-background {
-    background-size: contain;
-    background-position: 50%;
-    background-repeat: no-repeat;
+  .mobile-number {
+    margin-top: 10%;
   }
-  .flag {
-    outline: 0.5px solid grey;
-    height: 50px !important;
-    width: 50px !important;
-  }
-  .ion-input {}
-}
-
-.numberHeader {
-  font-size: 2em;
-  margin-top: 35%;
 }
 
 .phoneNumber {

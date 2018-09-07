@@ -16,6 +16,13 @@ export class ProductProvider {
     console.log('Hello ProductProvider Provider');
   }
 
+  retrieveAllProducts() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.get(vars.apiUrl + '/product/retrieve-all-products', { headers: headers })
+      .map(res => res.json());
+  }
+
   retrieveCategories() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

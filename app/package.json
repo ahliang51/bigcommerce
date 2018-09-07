@@ -33,7 +33,7 @@
     "@ionic/storage": "2.1.3",
     "angular2-expandable-list": "^0.5.0",
     "bootstrap-social": "^5.1.1",
-    "cordova-android": "^7.1.0",
+    "cordova-android": "7.0.0",
     "cordova-plugin-app-launcher": "git+https://github.com/nchutchind/cordova-plugin-app-launcher.git",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-facebook": "^0.2.2",
@@ -51,7 +51,6 @@
     "flag-icon-css": "^3.0.0",
     "font-awesome": "^4.7.0",
     "ion-multi-picker": "^2.1.2",
-    "ionic": "^3.20.0",
     "ionic-angular": "3.9.2",
     "ionic2-super-tabs": "^4.3.0",
     "ionicons": "3.0.0",
@@ -64,6 +63,7 @@
   "devDependencies": {
     "@angular/cli": "^1.7.4",
     "@ionic/app-scripts": "3.1.8",
+    "ionic": "4.0.1",
     "typescript": "2.8.3"
   },
   "description": "An Ionic project",

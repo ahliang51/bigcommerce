@@ -1,15 +1,20 @@
-import { Component, Pipe, PipeTransform } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { ProductProvider } from '../../providers/product/product';
 import { ProductCategoriesPage } from '../product-categories/product-categories';
+import { ProductDetailPage } from '../product-detail/product-detail';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
+
+
 export class HomePage {
 
   banners = [];
+  products = [];
   categories = [];
   rootNavCtrl: NavController;
   storePath = "http://store-5q1eg0d0bi.mybigcommerce.com/";
@@ -47,23 +52,24 @@ export class HomePage {
       // console.log(JSON.stringify(data));
     })
 
-    this.productService.retrieveCategories().subscribe(data => {
-      // console.log(JSON.stringify(data));
+    // this.productService.retrieveCategories().subscribe(data => {
 
+
+    //   for (let temp of data) {
+    //     let source = temp.description;
+    //     let index = temp.description.search('src');
+    //     let fileType = temp.description.indexOf("png", temp.description.indexOf("png") + 1);
+    //     let imagePath = this.storePath + source.substring(index + 28, fileType + 3)
+    //     temp.imagePath = imagePath;
+    //   }
+    //   this.categories = data;
+    // })
+    this.productService.retrieveAllProducts().subscribe(data => {
+      this.products = data.data;
       loading.dismiss();
 
-      for (let temp of data) {
-        let source = temp.description;
-        let index = temp.description.search('src');
-        // let fileType = banner.content.search('png');
-        let fileType = temp.description.indexOf("png", temp.description.indexOf("png") + 1);
-        let imagePath = this.storePath + source.substring(index + 28, fileType + 3)
-        // console.log(JSON.stringify(temp))
-        temp.imagePath = imagePath;
-        // console.log(JSON.stringify(temp))
-      }
-      this.categories = data;
-      // console.log(JSON.stringify(this.categories))
+      console.log(this.products);
+
     })
   }
 
@@ -73,5 +79,11 @@ export class HomePage {
       categoryName: categoryName
     })
 
+  }
+
+  viewProduct(productId) {
+    this.rootNavCtrl.push(ProductDetailPage, {
+      productId: productId
+    })
   }
 }

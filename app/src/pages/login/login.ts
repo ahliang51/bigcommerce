@@ -46,6 +46,7 @@ export class LoginPage {
         // Terms & Conditions
         let termsCondition = this.alertCtrl.create({
           title: 'Terms & Conditions',
+          enableBackdropDismiss: false,
           message: `
   <p>
   By downloading, browsing, accessing or using Gesel Store mobile 

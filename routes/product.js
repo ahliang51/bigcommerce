@@ -7,6 +7,17 @@ let express = require('express'),
     config = require('../config/config'),
     db, jwt, bigCommerce, bigCommerceV3;
 
+router.get('/retrieve-all-products', (req, res, next) => {
+    bigCommerceV3 = req.bigCommerceV3;
+    bigCommerceV3.get('/catalog/products?include=images')
+        .then(data => {
+            res.json(data)
+        })
+        .catch(err => {
+            res.json(err);
+        })
+});
+
 
 router.get('/categories', (req, res, next) => {
     bigCommerce = req.bigCommerce;
